@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <?php include("./Public/Pages/Common/head.php");?>
+</head>
+
+<body>
+
+    <?php include("./Public/Pages/Common/loader.php");?>
+
+    <!-- Header Area-->
+    <?php include("./Public/Pages/Common/header.php");?>
+
+
+    <!-- Sidenav Black Overlay-->
+    <?php include("./Public/Pages/Common/sidebar.php");?>
+
+    <div class="page-content-wrapper">
+        <!-- News Today Wrapper-->
+
+
+
+    </div>
+
+    <!-- Footer Nav -->
+    <?php include("./Public/Pages/Common/footer.php");?>
+
+    <?php include("./Public/Pages/Common/script.php");?>
+
+
+</body>
+
+</html>

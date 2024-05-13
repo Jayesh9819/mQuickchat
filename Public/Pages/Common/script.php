@@ -1,0 +1,12 @@
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/popper.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/waypoints.min.js"></script>
+<script src="../assets/js/jquery.easing.min.js"></script>
+<script src="../assets/js/owl.carousel.min.js"></script>
+<script src="../assets/js/jquery.animatedheadline.min.js"></script>
+<script src="../assets/js/jquery.counterup.min.js"></script>
+<script src="../assets/js/wow.min.js"></script>
+<script src="../assets/js/date-clock.js"></script>
+<script src="../assets/js/dark-mode-switch.js"></script>
+<script src="../assets/js/active.js"></script>
