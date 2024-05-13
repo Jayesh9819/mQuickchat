@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmigoGPT</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.1.0/remixicon.min.css">
+    <link rel="stylesheet" href="assets/css/swap.css">
+    <link rel="stylesheet" href="assets/css/boostrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/media-query.css">
+</head>
+<body>
+    <div class="site_content">
+        <!-- ====================================== Page Loader ===================================== -->
+        <div class="loader">
+            <div class="shapes"></div>
+        </div>
+        <!-- ====================================== Page Loader End===================================== -->
+        <!-- ====================================== Confirm OTP Screen ===================================== -->
+        <div class="verification-main">
+            <div class="container verify-screen-main p-0">
+                <div class="back-btn back-btn2">
+                    <a href="javascript:history.go(-1)">
+                        <img class="profile-pic" src="assets/images/Button-Back.png" alt="Button-Back">
+                    </a>
+                    <h1>Confirm OTP</h1>
+                </div>
+                <div class="verify-section-main">
+                    <img class="verify-img" src="assets/images/confirm-otp-img.png" alt="confirm-otp-img">
+                    <p class="sub-text">Code has been send to +1 234 *** **99</p>
+                    <div class="otp-field">
+                        <input type="number" class="no-spinners" oninput="validateInput(this)">
+                        <input type="number" class="no-spinners" oninput="validateInput(this)">
+                        <input type="number" class="no-spinners" oninput="validateInput(this)">
+                        <input type="number" class="no-spinners" oninput="validateInput(this)">
+                    </div>
+                    <div class="block-footer resend-otp">
+                        <p> Code Expire in <span id="countdowntimer">59</span> </p>
+                    </div>
+                    <div class="bottom-fix-btn onboarding-next-btn-Subscribe"
+                        onclick="location.href='new_password.html'">
+                        <a href="new_password.html">Confirm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ====================================== Confirm OTP Screen End===================================== -->
+    </div>
+    <script src="assets/javascript/jquery.min.js"></script>
+    <script src="assets/javascript/bootstrap.bundle.min.js"></script>
+    <script src="assets/javascript/script.js"></script>
+    <script>
+        // Mobile Confirm second counter OTP 
+        var timeleft = 59;
+        var downloadTimer = setInterval(function () {
+            timeleft--;
+            document.getElementById("countdowntimer").textContent = timeleft;
+            if (timeleft <= 0) {
+                clearInterval(downloadTimer);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
