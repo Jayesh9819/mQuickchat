@@ -456,7 +456,7 @@
 		<script>
 			$(document).ready(function() {
 
-				// Search sd
+				// Search 
 				$("#searchText").on("input", function() {
 					var searchText = $(this).val();
 					if (searchText == "") return;
