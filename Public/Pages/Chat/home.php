@@ -7,7 +7,7 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>	<?php
 	ob_start();
 
-	include("./Public/Pages/Common/header.php");
+	include("./Public/Pages/Common/head.php");
 	include "./Public/Pages/Common/auth_user.php";
 	function echoToastScript($type, $message)
 	{
