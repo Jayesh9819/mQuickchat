@@ -4,7 +4,7 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization");
 
 include "./App/helper/webset.php";
-$base_url='https:quickchat.biz';
+$base_url='https://quickchat.biz';
 ?>
 
 
