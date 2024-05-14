@@ -7,7 +7,7 @@ $allowedRoles = ['User', 'Manager', 'Agent', 'Admin', 'Supervisor']; // Define a
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != 1 || !isset($userRole) || !in_array($userRole, $allowedRoles)) {
     // The user is not logged in or does not have an allowed role
-    header('Location: ../index.php/Login_to_CustCount'); // Redirect to the login page
+    header('Location: ../index.php/Login'); // Redirect to the login page
     exit; // Prevent further script execution after redirect
 }
 

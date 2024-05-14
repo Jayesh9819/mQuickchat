@@ -36,26 +36,9 @@ if (isset($_POST['id_2'])) {
 				$stmt2 = $conn->prepare($sql2);
 				$stmt2->execute([$opened, $chat_id]);
 
-				// $attachmentHTML = '';
-				// if (!empty($chat['attachment'])) {
-				//     $imageUrl = "../uploads/" . $chat['attachment'];
-				//     $attachmentHTML = "<img src='{$imageUrl}' alt='Attachment' style='max-width: 200px; display: block;'>";
-				// }
-
-				// $replyButton = '';
-				// if (!empty($chat['reply_id'])) {
-				// }
-
-				// // Build message block
-				// $responseHTML .= "<p class='ltext border rounded p-2 mb-1'>";
-				// $responseHTML .= linkify($chat['message']);
-				// $responseHTML .= $attachmentHTML;
-				// $responseHTML .= "<small class='d-block'>" . $chat['created_at'] . "</small>";
-				// $responseHTML .= $replyButton;
-				// $responseHTML .= "</p>";
-				// $responseHTML .= '<button onclick="setReplyTo(' . $chat_id . ', \'' . addslashes(htmlspecialchars($chat['message'])) . '\')">Reply</button>';
 				$messageHtml = '<div class="message received" id="msg_' . $chat['chat_id'] . '" style="text-align: left; padding-right: 21px;">';
-				$messageHtml .= '<button onclick="setReplyTo(' . $chat['chat_id'] . ', \'' . addslashes(htmlspecialchars($chat['message'])) . '\')">Reply</button>';
+				$messageHtml .= '<button onclick="setReplyTo(' . $chat['chat_id'] . ', \'' . addslashes(htmlspecialchars($chat['message'])) . '\')">								<i class="lni lni-reply"></i>
+				</button>';
 				$messageHtml .= '<div class="message-box" style="display: inline-block; background-color: #e9e9eb; padding: 10px; border-radius: 10px; margin: 5px;">';
 				if ($chat['reply_id']) {
 					$repliedMessage = getMessageById($chat['reply_id'], $conn); // Fetching the replied message

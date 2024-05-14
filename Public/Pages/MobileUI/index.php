@@ -2,19 +2,37 @@
 <html lang="en">
 
 <head>
-    <?php include("./Public/Pages/Common/head.php");?>
+    <?php include("./Public/Pages/Common/head.php"); ?>
+    <?php
+    include "./Public/Pages/Common/auth_user.php";
+    function echoToastScript($type, $message)
+    {
+        echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
+    }
+
+
+    if (isset($_SESSION['toast'])) {
+        $toast = $_SESSION['toast'];
+        echoToastScript($toast['type'], $toast['message']);
+        unset($_SESSION['toast']); // Clear the toast message from session
+    }
+
+    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+
+    // Display error message if available
+    if (isset($_SESSION['login_error'])) {
+        echo '<p class="error">' . $_SESSION['login_error'] . '</p>';
+        unset($_SESSION['login_error']); // Clear the error message
+    }
+    ?>
+
 </head>
 
 <body>
 
-    <?php include("./Public/Pages/Common/loader.php");?>
-
-    <!-- Header Area-->
-    <?php include("./Public/Pages/Common/header.php");?>
-
-
-    <!-- Sidenav Black Overlay-->
-    <?php include("./Public/Pages/Common/sidebar.php");?>
+    <?php include("./Public/Pages/Common/loader.php"); ?>
+    <?php include("./Public/Pages/Common/header.php"); ?>
+    <?php include("./Public/Pages/Common/sidebar.php"); ?>
 
     <div class="page-content-wrapper">
         <!-- News Today Wrapper-->
@@ -103,9 +121,9 @@
     </div>
 
     <!-- Footer Nav -->
-    <?php include("./Public/Pages/Common/footer.php");?>
+    <?php include("./Public/Pages/Common/footer.php"); ?>
 
-    <?php include("./Public/Pages/Common/script.php");?>
+    <?php include("./Public/Pages/Common/script.php"); ?>
 
 
 </body>

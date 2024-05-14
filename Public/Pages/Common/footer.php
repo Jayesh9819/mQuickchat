@@ -1,31 +1,34 @@
 <div class="footer-nav-area" id="footerNav">
-        <div class="newsten-footer-nav h-100">
-            <ul class="h-100 d-flex align-items-center justify-content-between">
-                <li class="active">
-                    <a href="./Chat">
-                        <i class="lni lni-home"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="catagory.html">
-                        <i class="lni lni-pointer"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="trending.html">
-                        <i class="lni lni-bolt-alt"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="pages.html">
-                        <i class="lni lni-heart"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="bookmark.html">
-                        <i class="lni lni-bookmark"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <div class="newsten-footer-nav h-100">
+        <ul class="h-100 d-flex align-items-center justify-content-between">
+            <?php $segments = explode('/', rtrim($uri, '/'));
+            $lastSegment = end($segments);
+            ?>
+            <li class="<?php if ($lastSegment == 'Home') echo 'active';  ?>">
+                <a href="./Home">
+                    <i class="lni lni-home"></i>
+                </a>
+            </li>
+            <li class="<?php if ($lastSegment == 'Chat') echo 'active';  ?>">
+                <a href="./Chat">
+                    <i class="lni lni-support"></i>
+                </a>
+            </li>
+            <li class="<?php if ($lastSegment == 'Redeem') echo 'active';  ?>">
+                <a href="./Redeem">
+                    <i class="lni lni-revenue"></i>
+                </a>
+            </li>
+            <li class="<?php if ($lastSegment == 'Offers') echo 'active';  ?>">
+                <a href="./Offers">
+                    <i class="lni lni-gift"></i>
+                </a>
+            </li>
+            <li class="<?php if ($lastSegment == 'Profile') echo 'active';  ?>">
+                <a href="./Profile">
+                    <i class="lni lni-user"></i>
+                </a>
+            </li>
+        </ul>
     </div>
+</div>

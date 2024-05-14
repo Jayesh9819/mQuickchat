@@ -56,7 +56,8 @@ if (isset($_POST['message'], $_POST['to_id'])) {
 	// Generate the HTML content for the chat message
 	$messageHtml = '<div class="message sent" id="msg_' . $chat_id . '" style="text-align: right; padding-right: 21px;">';
 	// $messageHtml .= '<button onclick="setReplyTo(' . $chat_id . ', \'' . addslashes(htmlspecialchars($message)) . '\')">Reply</button>';
-	$messageHtml .= '<button style="background: none; border: none; cursor: pointer; position:relative; bottom:10px;" onclick="setReplyTo(' . $chat_id . ', \'' . addslashes(htmlspecialchars($message)) . '\')"><img src="../uploads/reply.png" style="width:50px;" alt="Reply"></button>';
+	$messageHtml .= '<button style="background: none; border: none; cursor: pointer; position:relative; bottom:10px;" onclick="setReplyTo(' . $chat_id . ', \'' . addslashes(htmlspecialchars($message)) . '\')"><i class="lni lni-reply"></i>
+	</button>';
 
 
 	$messageHtml .= '<div class="message-box" style="display: inline-block; background-color: #dcf8c6; padding: 10px; border-radius: 10px; margin: 5px;">';

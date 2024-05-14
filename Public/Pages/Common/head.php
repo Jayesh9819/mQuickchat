@@ -11,3 +11,4 @@ include "./App/helper/webset.php";
 <title><?php echo $settings['name']; ?></title>
 <link rel="icon" href="<?php echo $settings['icon']; ?>">
 <link rel="stylesheet" href="../assets/style.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">

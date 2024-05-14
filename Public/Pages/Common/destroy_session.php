@@ -24,5 +24,5 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to login page or home page
-header('Location: ../../../index.php'); // Adjust the path as needed
+header('Location: ./Home'); // Adjust the path as needed
 exit();

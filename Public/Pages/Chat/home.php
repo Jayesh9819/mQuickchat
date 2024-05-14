@@ -8,10 +8,8 @@
 	<?php
 	ob_start();
 
-	include("./Public/Pages/Common/header.php");
+	include("./Public/Pages/Common/head.php");
 	include "./Public/Pages/Common/auth_user.php";
-
-	// Function to echo the script for toastr
 	function echoToastScript($type, $message)
 	{
 		echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
@@ -325,493 +323,474 @@
 
 </head>
 
-<body class="  ">
+<body>
 
-	<?php
-	include("./Public/Pages/Common/sidebar.php");
 
-	?>
+	<div class="page-content-wrapper" style="margin-top: 0%;" >
+		<div class=" rounded" style="height:92vh;width:100%;">
 
-	<main class="main-content">
-		<?php
-		// include("./Public/Pages/Common/main_content.php");
-		?>
-		<div class="content-inner container-fluid pb-0" id="page_layout">
-			<div class=" rounded" style="height:92vh;width:100%;">
+			<div class="chat-header" style=" width: 100%; padding: 10px; display: flex; align-items: center;">
 
-				<div class="chat-header" style=" width: 100%; padding: 10px; display: flex; align-items: center;">
+				<a href="./Chat" class="" style="color: white; margin-right: 10px; font-size: 30px; text-decoration: none;">←</a>
 
-					<a href="./Chat_l" class="" style="color: white; margin-right: 10px; font-size: 30px; text-decoration: none;">←</a>
+				<img src="../uploads/profile/<?= !empty($chatWith['p_p']) ? $chatWith['p_p'] : '07.png' ?>" class="rounded-circle" style="width: 50px; height: 50px; margin-right: 10px;">
 
-					<img src="../uploads/profile/<?= !empty($chatWith['p_p']) ? $chatWith['p_p'] : '07.png' ?>" class="rounded-circle" style="width: 50px; height: 50px; margin-right: 10px;">
-
-					<div style="flex-grow: 1;">
-						<h1 style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
-							<?= $chatWith['username'] ?>
-						</h1>
-						<?php
-						if ($chatWith['role'] == 'User') {
-							echo '<h1 class="" style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
+				<div style="flex-grow: 1;">
+					<h1 style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
+						<?= $chatWith['username'] ?>
+					</h1>
+					<?php
+					if ($chatWith['role'] == 'User') {
+						echo '<h1 class="" style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
             				Page Name:- ' . $chatWith['pagename'] . '
        								 </h1>';
-						} elseif ($chatWith['role'] == 'Agent' && $_SESSION['role'] != 'User') {
-							echo '<h1 class="" style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
+					} elseif ($chatWith['role'] == 'Agent' && $_SESSION['role'] != 'User') {
+						echo '<h1 class="" style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
 						Page Name:- ' . $chatWith['pagename'] . '
 									</h1>';
-						} elseif ($chatWith['role'] == 'Manager' || $chatWith['role'] == 'Supervisor') {
-							echo '<h1 class="" style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
+					} elseif ($chatWith['role'] == 'Manager' || $chatWith['role'] == 'Supervisor') {
+						echo '<h1 class="" style="margin-bottom: 0; font-size: 16px; color: white; font-weight: bold;">
 						Branch Name:- ' . $chatWith['branchname'] . '
 									</h1>';
-						}
-						?>
-
-						<div title="online">
-							<?php if (last_seen($chatWith['last_seen']) == "Active") { ?>
-								<div style="width: 10px; height: 10px; background-color: lime; border-radius: 50%; margin-right: 5px;"></div>
-								<p style="color: white;">Online</p>
-							<?php } else { ?>
-								<p style="color: white;">
-									Last seen: <?= last_seen($chatWith['last_seen']) ?>
-								</p>
-							<?php } ?>
-						</div>
-					</div>
-					<?php
-					if ($_SESSION['role'] == 'User') {
-						echo '<a name="" id="" class="btn btn-secondary shprofile" href="./Redeem_Request" role="button">Redeem </a>';
-					}
-
-					if ($chatWith['role'] == 'User') {
-						echo '<a name="" id="" class="btn btn-primary shprofile" href="./Show_Profile?u=' . $chatWith['id'] . '" role="button">Show Profile</a>';
-						echo '				<a name="" id="" class="btn btn-primary shprofile" href="./cash_out?u=' . $chatWith['username'] . '" role="button">Redeem </a>
-					<a name="" id="" class="btn btn-danger shprofile" href="./deposit?u=' . $chatWith['username'] . '" role="button">Recharge </a>';
 					}
 					?>
 
-
+					<div title="online">
+						<?php if (last_seen($chatWith['last_seen']) == "Active") { ?>
+							<div style="width: 10px; height: 10px; background-color: lime; border-radius: 50%; margin-right: 5px;"></div>
+							<p style="color: white;">Online</p>
+						<?php } else { ?>
+							<p style="color: white;">
+								Last seen: <?= last_seen($chatWith['last_seen']) ?>
+							</p>
+						<?php } ?>
+					</div>
 				</div>
-				<?php function linkify($text)
-				{
-					$urlPattern = '/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]/i';
-					$text = preg_replace($urlPattern, '<a class="rtext" href="$0" target="_blank">$0</a>', $text);
-					return $text;
+				<?php
+				if ($_SESSION['role'] == 'User') {
+					echo '<a name="" id="" class="btn btn-secondary shprofile" href="./Redeem_Request" role="button">Redeem </a>';
+				}
+
+				if ($chatWith['role'] == 'User') {
+					echo '<a name="" id="" class="btn btn-primary shprofile" href="./Show_Profile?u=' . $chatWith['id'] . '" role="button">Show Profile</a>';
+					echo '				<a name="" id="" class="btn btn-primary shprofile" href="./cash_out?u=' . $chatWith['username'] . '" role="button">Redeem </a>
+					<a name="" id="" class="btn btn-danger shprofile" href="./deposit?u=' . $chatWith['username'] . '" role="button">Recharge </a>';
 				}
 				?>
 
 
-				<div class="shadow p-4  d-flex flex-column  chat-box" id="chatBox">
+			</div>
+			<?php function linkify($text)
+			{
+				$urlPattern = '/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]/i';
+				$text = preg_replace($urlPattern, '<a class="rtext" href="$0" target="_blank">$0</a>', $text);
+				return $text;
+			}
+			?>
 
 
-					<div class="chat-messages" style="padding: 20px;">
-
-						<?php if (!empty($chats)) : foreach ($chats as $chat) : ?>
-
-								<div class="message <?= ($chat['from_id'] == $_SESSION['user_id']) ? 'sent' : 'received' ?>" id="msg_<?= $chat['chat_id'] ?>" style="text-align: <?= ($chat['from_id'] == $_SESSION['user_id']) ? 'right' : 'left'; ?>">
+			<div class="shadow p-4  d-flex flex-column  chat-box" id="chatBox">
 
 
-									<button class="replyButtonsss" style="background: none; border: none; cursor: pointer; position:relative; bottom:30px;" onclick="setReplyTo(<?= $chat['chat_id'] ?>, '<?= addslashes(htmlspecialchars($chat['message'])) ?>')">
-										<img src="../uploads/reply.png" style="width:50px;" alt="Reply" style="display: block;">
-									</button>
+				<div class="chat-messages" style="padding: 0px;">
+
+					<?php if (!empty($chats)) : foreach ($chats as $chat) : ?>
+
+							<div class="message <?= ($chat['from_id'] == $_SESSION['user_id']) ? 'sent' : 'received' ?>" id="msg_<?= $chat['chat_id'] ?>" style="text-align: <?= ($chat['from_id'] == $_SESSION['user_id']) ? 'right' : 'left'; ?>">
 
 
-									<div class="message-box <?= !empty($chat['reply_id']) ? 'replied-message-box' : '' ?>" style="background-color: <?= ($chat['from_id'] == $_SESSION['user_id']) ? '#dcf8c6' : '#e9e9eb'; ?>; padding: 10px; display: inline-block; border-radius: 10px; margin: 5px;">
-										<?php if (isset($chat['sender_username']) && !empty($chat['sender_username'])) : ?>
-											<h3 style="display: block; color: #666; font-size: smaller;"><?= htmlspecialchars($chat['sender_username']) ?></h3>
-										<?php endif; ?>
+								<button class="replyButtonsss" style="background: none; border: none; cursor: pointer; position:relative; bottom:30px;" onclick="setReplyTo(<?= $chat['chat_id'] ?>, '<?= addslashes(htmlspecialchars($chat['message'])) ?>')">
+								<i class="lni lni-reply"></i>
 
-										<?php if (!empty($chat['reply_id'])) : ?>
-											<?php $repliedMessage = getMessageById($chat['reply_id'], $conn); ?>
-											<div class="replied-message" onclick="activateOriginalMessage('msg_<?= $repliedMessage['chat_id'] ?>');">
-												<em>Replied to: <?= htmlspecialchars($repliedMessage['message']) ?></em>
-											</div>
+								</button>
 
-										<?php endif; ?>
-										<?php
-										$attachmentHTML = '';
-										if (!empty($chat['attachment'])) {
-											$file = "../uploads/" . $chat['attachment'];
-											$fileInfo = pathinfo($file);
-											$fileExtension = strtolower($fileInfo['extension']);
 
-											switch ($fileExtension) {
-												case 'jpg':
-												case 'jpeg':
-												case 'png':
-												case 'gif':
-													$attachmentHTML = "<div><a href='{$file}' target='_blank'><img src='{$file}' alt='Image' style='max-width: 100%; max-height: 200px; display: block;'></a></div>";
-													$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
-													$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
-													break;
-												case 'mp4':
-													$attachmentHTML = "<div><video controls style='max-width: 100%; max-height: 200px;'><source src='{$file}' type='video/mp4'>Your browser does not support the video tag.</video></div>";
-													$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
-													$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
-													break;
-												case 'pdf':
-													$attachmentHTML = "<a href='{$file}' target='_blank' class='btn btn-link' style='text-decoration: none; color: #333;'>Open PDF</a>";
-													$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
-													$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
-													break;
-												default:
-													$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
-													$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
-													break;
-											}
+								<div class="message-box <?= !empty($chat['reply_id']) ? 'replied-message-box' : '' ?>" style="background-color: <?= ($chat['from_id'] == $_SESSION['user_id']) ? '#dcf8c6' : '#e9e9eb'; ?>; padding: 10px; display: inline-block; border-radius: 10px; margin: 5px;">
+									<?php if (isset($chat['sender_username']) && !empty($chat['sender_username'])) : ?>
+										<h3 style="display: block; color: #666; font-size: smaller;"><?= htmlspecialchars($chat['sender_username']) ?></h3>
+									<?php endif; ?>
+
+									<?php if (!empty($chat['reply_id'])) : ?>
+										<?php $repliedMessage = getMessageById($chat['reply_id'], $conn); ?>
+										<div class="replied-message" onclick="activateOriginalMessage('msg_<?= $repliedMessage['chat_id'] ?>');">
+											<em>Replied to: <?= htmlspecialchars($repliedMessage['message']) ?></em>
+										</div>
+
+									<?php endif; ?>
+									<?php
+									$attachmentHTML = '';
+									if (!empty($chat['attachment'])) {
+										$file = "../uploads/" . $chat['attachment'];
+										$fileInfo = pathinfo($file);
+										$fileExtension = strtolower($fileInfo['extension']);
+
+										switch ($fileExtension) {
+											case 'jpg':
+											case 'jpeg':
+											case 'png':
+											case 'gif':
+												$attachmentHTML = "<div><a href='{$file}' target='_blank'><img src='{$file}' alt='Image' style='max-width: 100%; max-height: 200px; display: block;'></a></div>";
+												$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
+												$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
+												break;
+											case 'mp4':
+												$attachmentHTML = "<div><video controls style='max-width: 100%; max-height: 200px;'><source src='{$file}' type='video/mp4'>Your browser does not support the video tag.</video></div>";
+												$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
+												$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
+												break;
+											case 'pdf':
+												$attachmentHTML = "<a href='{$file}' target='_blank' class='btn btn-link' style='text-decoration: none; color: #333;'>Open PDF</a>";
+												$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
+												$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
+												break;
+											default:
+												$attachmentHTML .= "<a href='{$file}' download class='btn btn-link' style='text-decoration: none; color: white; background-color: #4CAF50; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; transition: background-color 0.3s;'>Download</a>";
+												$attachmentHTML .= "<style>.btn:hover { background-color: #45a049; }</style>";
+												break;
 										}
-										echo $attachmentHTML;
-										?>
+									}
+									echo $attachmentHTML;
+									?>
 
-										<p style="margin: 0;"><?= linkify($chat['message']) ?></p>
-										<?php
-										if (isset($_SESSION['timezone'])) {
-											$timezone = new DateTimeZone($_SESSION['timezone']);
-										} else {
-											$timezone = new DateTimeZone('UTC');
-										}
-										$dateTime = new DateTime($chat['created_at'], new DateTimeZone('UTC')); // Assuming stored time is in UTC
-										$dateTime->setTimezone($timezone); // Convert to user's timezone
-										$displayTime = $dateTime->format('M d, Y h:i A');
-										?>
-										<small style="display: block; color: #666; font-size: smaller;"><?= $displayTime ?></small>
-										<?php if (isset($chat['sender_username']) && !empty($chat['sender_username'])) : ?>
-											<small style="display: block; color: #666; font-size: smaller;">By <?= htmlspecialchars($chat['sender_username']) ?></small>
-										<?php endif; ?>
-									</div>
-
+									<p style="margin: 0;"><?= linkify($chat['message']) ?></p>
+									<?php
+									if (isset($_SESSION['timezone'])) {
+										$timezone = new DateTimeZone($_SESSION['timezone']);
+									} else {
+										$timezone = new DateTimeZone('UTC');
+									}
+									$dateTime = new DateTime($chat['created_at'], new DateTimeZone('UTC')); // Assuming stored time is in UTC
+									$dateTime->setTimezone($timezone); // Convert to user's timezone
+									$displayTime = $dateTime->format('M d, Y h:i A');
+									?>
+									<small style="display: block; color: #666; font-size: smaller;"><?= $displayTime ?></small>
+									<?php if (isset($chat['sender_username']) && !empty($chat['sender_username'])) : ?>
+										<small style="display: block; color: #666; font-size: smaller;">By <?= htmlspecialchars($chat['sender_username']) ?></small>
+									<?php endif; ?>
 								</div>
-							<?php endforeach;
-						else : ?>
-							<div class="alert alert-info text-center">
-								<i class="fa fa-comments d-block fs-big"></i>
-								No messages yet.
+
 							</div>
-						<?php endif; ?>
-					</div>
-
+						<?php endforeach;
+					else : ?>
+						<div class="alert alert-info text-center">
+							<i class="fa fa-comments d-block fs-big"></i>
+							No messages yet.
+						</div>
+					<?php endif; ?>
 				</div>
-
-				<div id="replyIndicator" style="display: none; background-color: #f0f0f0; padding: 5px; border-radius: 5px; margin-bottom: 5px;">
-					<button onclick="clearReply()" style="float: right;">&times;</button>
-				</div>
-
-				<div class="input-group mb-3" style="display: flex; align-items: center; width: 100%; height: 50px; background-color: #f8f9fa; border-radius: 25px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
-					<button class="btn btn-outline-secondary" type="button" id="attachmentBtn" style="flex: 0 0 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 5px; background-color: white;">
-						<img src="../uploads/pin.png" alt="Attachment" style="width: 20px; height: 20px;">
-					</button>
-					<input type="file" id="fileInput" style="display: none;">
-
-					<button class="btn btn-outline-secondary emoji-picker-button" type="button" style="flex: 0 0 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 5px; background-color: white;">😊</button>
-					<textarea id="message" class="form-control" style="flex-grow: 1; height: 100%; resize: none; padding: 8px; border-radius: 25px; margin-right: 5px; background-color: white; border: 1px solid #ced4da;" rows="1"></textarea>
-					<button class="btn btn-primary" id="sendBtn" style="border: none; background: none; padding: 0; outline: none; margin-left: 10px; position:relative;top:2px ;flex: 0 0 40px; height: 40px;  display: flex; align-items: center; justify-content: center;">
-						<!-- <i class="fas fa-paper-plane" style="width: 20px; height: 20px;"></i> -->
-						<img src="../uploads/Qbutton.png" style="width: 60px; height: 60px;" alt="">
-					</button>
-				</div>
-				<div id="emojiPicker" class="emoji-picker" style="display: none;"></div>
-				<audio id="chatNotificationSound" src="../uploads/notification.wav" preload="auto"></audio>
 
 			</div>
 
+			<div id="replyIndicator" style="display: none; background-color: #f0f0f0; padding: 5px; border-radius: 5px; margin-bottom: 5px;">
+				<button onclick="clearReply()" style="float: right;">&times;</button>
+			</div>
+
+			<div class="input-group mb-3" style="display: flex; align-items: center; width: 100%; height: 50px; background-color: #f8f9fa; border-radius: 25px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+				<button class="btn btn-outline-secondary" type="button" id="attachmentBtn" style="flex: 0 0 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 5px; background-color: white;">
+					<img src="../uploads/pin.png" alt="Attachment" style="width: 20px; height: 20px;">
+				</button>
+				<input type="file" id="fileInput" style="display: none;">
+
+				<button class="btn btn-outline-secondary emoji-picker-button" type="button" style="flex: 0 0 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 5px; background-color: white;">😊</button>
+				<textarea id="message" class="form-control" style="flex-grow: 1; height: 100%; resize: none; padding: 8px; border-radius: 25px; margin-right: 5px; background-color: white; border: 1px solid #ced4da;" rows="1"></textarea>
+				<button class="btn btn-primary" id="sendBtn" style="border: none; background: none; padding: 0; outline: none; margin-left: 10px; position:relative;top:2px ;flex: 0 0 40px; height: 40px;  display: flex; align-items: center; justify-content: center;">
+					<!-- <i class="fas fa-paper-plane" style="width: 20px; height: 20px;"></i> -->
+					<img src="../uploads/Qbutton.png" style="width: 50px; height: 50px;" alt="">
+				</button>
+			</div>
+			<div id="emojiPicker" class="emoji-picker" style="display: none;"></div>
+			<audio id="chatNotificationSound" src="../uploads/notification.wav" preload="auto"></audio>
 
 		</div>
 
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	</div>
 
-		<script>
-			document.addEventListener("visibilitychange", function() {
-				if (!document.hidden) {
-					// The user has switched back to the tab, fetch new messages immediately
-					fetchMessages();
-				}
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script>
+		document.addEventListener("visibilitychange", function() {
+			if (!document.hidden) {
+				// The user has switched back to the tab, fetch new messages immediately
+				fetchMessages();
+			}
+		});
+
+		$(document).ready(function() {
+			if ("Notification" in window) {
+				Notification.requestPermission();
+			}
+		});
+
+		function activateMessage(msgId) {
+			// Remove active class from all messages
+			document.querySelectorAll('.message-box').forEach(box => {
+				box.classList.remove('active-message');
 			});
 
-			$(document).ready(function() {
-				if ("Notification" in window) {
-					Notification.requestPermission();
-				}
-			});
-
-			function activateMessage(msgId) {
-				// Remove active class from all messages
-				document.querySelectorAll('.message-box').forEach(box => {
-					box.classList.remove('active-message');
+			// Add active class to the clicked message
+			const messageElement = document.getElementById(msgId);
+			if (messageElement) {
+				messageElement.classList.add('active-message');
+				messageElement.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center'
 				});
 
-				// Add active class to the clicked message
-				const messageElement = document.getElementById(msgId);
-				if (messageElement) {
-					messageElement.classList.add('active-message');
-					messageElement.scrollIntoView({
-						behavior: 'smooth',
-						block: 'center'
-					});
-
-					// Optional: Clear active state after a few seconds or on another action
-					setTimeout(() => {
-						messageElement.classList.remove('active-message');
-					}, 3000); // Removes the active class after 3 seconds
-				}
+				// Optional: Clear active state after a few seconds or on another action
+				setTimeout(() => {
+					messageElement.classList.remove('active-message');
+				}, 3000); // Removes the active class after 3 seconds
 			}
+		}
 
-			function activateOriginalMessage(msgId) {
-				// Remove active class from all messages
-				document.querySelectorAll('.message-box').forEach(box => {
-					box.classList.remove('active-message');
-				});
-
-				// Add active class to the original message
-				const originalMessage = document.getElementById(msgId);
-				if (originalMessage) {
-					originalMessage.classList.add('active-message');
-					originalMessage.scrollIntoView({
-						behavior: 'smooth',
-						block: 'center'
-					});
-					setTimeout(() => {
-						originalMessage.classList.remove('active-message');
-					}, 3000);
-				}
-
-
-			}
-
-			function scrollToMessage(msgId) {
-				const messageElement = document.getElementById(msgId);
-				if (messageElement) {
-					messageElement.scrollIntoView({
-						behavior: 'smooth',
-						block: 'center'
-					});
-				}
-			}
-
-
-			function onNewMessageReceived() {
-				var chatSound = document.getElementById('chatNotificationSound');
-				chatSound.play();
-				if (document.hidden && Notification.permission === "granted") {
-					new Notification("New message", {
-						body: "You have received a new message.",
-
-					});
-				}
-			}
-
-			document.getElementById('attachmentBtn').addEventListener('click', function() {
-				document.getElementById('fileInput').click(); // Simulate click on the file input when attachment button is clicked
+		function activateOriginalMessage(msgId) {
+			// Remove active class from all messages
+			document.querySelectorAll('.message-box').forEach(box => {
+				box.classList.remove('active-message');
 			});
 
-			document.getElementById('fileInput').addEventListener('change', function() {
+			// Add active class to the original message
+			const originalMessage = document.getElementById(msgId);
+			if (originalMessage) {
+				originalMessage.classList.add('active-message');
+				originalMessage.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center'
+				});
+				setTimeout(() => {
+					originalMessage.classList.remove('active-message');
+				}, 3000);
+			}
+
+
+		}
+
+		function scrollToMessage(msgId) {
+			const messageElement = document.getElementById(msgId);
+			if (messageElement) {
+				messageElement.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center'
+				});
+			}
+		}
+
+
+		function onNewMessageReceived() {
+			var chatSound = document.getElementById('chatNotificationSound');
+			chatSound.play();
+			if (document.hidden && Notification.permission === "granted") {
+				new Notification("New message", {
+					body: "You have received a new message.",
+
+				});
+			}
+		}
+
+		document.getElementById('attachmentBtn').addEventListener('click', function() {
+			document.getElementById('fileInput').click(); // Simulate click on the file input when attachment button is clicked
+		});
+
+		document.getElementById('fileInput').addEventListener('change', function() {
+			sendMessage();
+		});
+		var replyToId = null;
+
+		function setReplyTo(messageId, messageText) {
+			replyToId = messageId; // Set the reply ID
+			console.log("Replying to Message ID:", replyToId); // Debug: Output the reply ID
+
+			const replyIndicator = document.getElementById('replyIndicator');
+			replyIndicator.innerHTML = `Replying to: "${messageText}"`; // Show reply reference
+			console.log("Message text set for reply:", messageText); // Debug: Output the message text being replied to
+
+			replyIndicator.style.display = 'block'; // Make the reply indicator visible
+			document.getElementById('message').focus(); // Focus the text area
+		}
+
+		function clearReply() {
+			console.log("Clearing reply from Message ID:", replyToId); // Debug: Output the ID being cleared
+			replyToId = null; // Clear the reply ID
+
+			const replyIndicator = document.getElementById('replyIndicator');
+			replyIndicator.style.display = 'none'; // Hide the reply indicator
+			replyIndicator.innerHTML = ""; // Also clear the inner HTML
+
+			const messageInput = document.getElementById('message');
+			messageInput.value = ""; // Clear the text area
+			messageInput.focus(); // Optional: Focus the text area again after clearing
+			console.log("Reply cleared and message input reset."); // Debug: Confirmation of reset
+		}
+		// Assuming you receive `originalMessage` as part of the AJAX response for replies
+
+
+
+		document.addEventListener('DOMContentLoaded', function() {
+
+			const textarea = document.getElementById('message');
+			const sendBtn = document.getElementById('sendBtn'); // Reference to the send button
+			// Ensure sendMessage incorporates replyToId
+			function sendMessage() {
+				console.log("this is exexcuting");
+				const message = document.getElementById('message').value.trim();
+				if (message === '') {
+					console.error('Cannot send an empty message.');
+					return; // Exit the function if message is empty
+				}
+
+				const fileInput = document.getElementById('fileInput');
+				const formData = new FormData();
+
+				formData.append('message', message);
+				if (fileInput.files.length > 0) {
+					formData.append('attachment', fileInput.files[0]);
+				}
+
+				formData.append('to_id', <?= json_encode($chatWith['id']) ?>);
+
+				if (replyToId !== null) {
+					formData.append('reply_to_id', replyToId);
+				}
+
+				$.ajax({
+					url: "../Public/Pages/Chat/app/ajax/insert.php",
+					type: "POST",
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function(response) {
+						const data = JSON.parse(response);
+						console.log(data);
+						if (data.status === "success") {
+							console.log("Message sent successfully:", data.message, data.html, data.data);
+							$("#chatBox").append(data.html); // Assuming the server responds with HTML to append
+
+							document.getElementById('message').value = "";
+							document.getElementById('fileInput').value = "";
+							replyToId = null;
+							clearReply(); // Call clearReply to reset the reply reference
+							$("#chatBox").append(data); // Append the message to the chat box
+
+							scrollDown();
+						} else {
+							console.error("Error in response:", data.message);
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error("Error sending message:", xhr.responseText);
+					}
+				});
+			}
+
+			sendBtn.addEventListener('click', function() {
 				sendMessage();
 			});
-			var replyToId = null;
+			textarea.addEventListener('keydown', function(event) {
+				if (event.key === "Enter" && !event.shiftKey) {
+					event.preventDefault(); // Prevent new line
+					sendMessage(); // Send the message
+				}
+			});
+		});
 
-			function setReplyTo(messageId, messageText) {
-				replyToId = messageId; // Set the reply ID
-				console.log("Replying to Message ID:", replyToId); // Debug: Output the reply ID
+		var scrollDown = function() {
+			let chatBox = document.getElementById('chatBox');
+			chatBox.scrollTop = chatBox.scrollHeight;
+		}
 
-				const replyIndicator = document.getElementById('replyIndicator');
-				replyIndicator.innerHTML = `Replying to: "${messageText}"`; // Show reply reference
-				console.log("Message text set for reply:", messageText); // Debug: Output the message text being replied to
+		scrollDown();
 
-				replyIndicator.style.display = 'block'; // Make the reply indicator visible
-				document.getElementById('message').focus(); // Focus the text area
-			}
+		document.addEventListener('DOMContentLoaded', function() {
+			// Function to update last seen status
+			let lastSeenUpdate = function() {
+				$.get("../Public/Pages/Chat/app/ajax/update_last_seen.php");
+			};
+			lastSeenUpdate(); // Call immediately when the document is ready
 
-			function clearReply() {
-				console.log("Clearing reply from Message ID:", replyToId); // Debug: Output the ID being cleared
-				replyToId = null; // Clear the reply ID
+			// Interval for updating last seen status every 10 seconds
+			setInterval(lastSeenUpdate, 10000);
 
-				const replyIndicator = document.getElementById('replyIndicator');
-				replyIndicator.style.display = 'none'; // Hide the reply indicator
-				replyIndicator.innerHTML = ""; // Also clear the inner HTML
+			// Function to fetch new messages
+			let fetchData = function() {
+				let formData = new FormData(); // Initialize FormData object
+				formData.append('id_2', <?= $chatWith['id'] ?>); // Append the user ID with whom the chat is happening
 
-				const messageInput = document.getElementById('message');
-				messageInput.value = ""; // Clear the text area
-				messageInput.focus(); // Optional: Focus the text area again after clearing
-				console.log("Reply cleared and message input reset."); // Debug: Confirmation of reset
-			}
-			// Assuming you receive `originalMessage` as part of the AJAX response for replies
+				$.ajax({
+					url: "../Public/Pages/Chat/app/ajax/getMessage.php",
+					type: "POST",
+					data: formData,
+					processData: false, // Prevent jQuery from automatically transforming the data into a query string
+					contentType: false, // Set the content type of the request to false to let the browser set it
+					success: function(response) {
+						const data = JSON.parse(response);
 
-
-
-			document.addEventListener('DOMContentLoaded', function() {
-
-				const textarea = document.getElementById('message');
-				const sendBtn = document.getElementById('sendBtn'); // Reference to the send button
-				// Ensure sendMessage incorporates replyToId
-				function sendMessage() {
-					console.log("this is exexcuting");
-					const message = document.getElementById('message').value.trim();
-					if (message === '') {
-						console.error('Cannot send an empty message.');
-						return; // Exit the function if message is empty
-					}
-
-					const fileInput = document.getElementById('fileInput');
-					const formData = new FormData();
-
-					formData.append('message', message);
-					if (fileInput.files.length > 0) {
-						formData.append('attachment', fileInput.files[0]);
-					}
-
-					formData.append('to_id', <?= json_encode($chatWith['id']) ?>);
-
-					if (replyToId !== null) {
-						formData.append('reply_to_id', replyToId);
-					}
-
-					$.ajax({
-						url: "../Public/Pages/Chat/app/ajax/insert.php",
-						type: "POST",
-						data: formData,
-						processData: false,
-						contentType: false,
-						success: function(response) {
-							const data = JSON.parse(response);
-							console.log(data);
-							if (data.status === "success") {
-								console.log("Message sent successfully:", data.message, data.html, data.data);
-								$("#chatBox").append(data.html); // Assuming the server responds with HTML to append
-
-								document.getElementById('message').value = "";
-								document.getElementById('fileInput').value = "";
-								replyToId = null;
-								clearReply(); // Call clearReply to reset the reply reference
-								$("#chatBox").append(data); // Append the message to the chat box
+						if (data.status === "success") {
+							if (data.html.trim().length > 0) {
+								$("#chatBox").append(data.html)
 
 								scrollDown();
-							} else {
-								console.error("Error in response:", data.message);
 							}
-						},
-						error: function(xhr, status, error) {
-							console.error("Error sending message:", xhr.responseText);
+						} else {
+							console.error("Error in response:", data.message);
 						}
-					});
-				}
+					},
+					error: function(xhr, status, error) {
+						console.error("Error sending message:", xhr.responseText);
+					}
+				});
+			};
 
-				sendBtn.addEventListener('click', function() {
+			// Set interval to fetch new data every 500 milliseconds
+			setInterval(fetchData, 500);
+		});
+
+		document.addEventListener('DOMContentLoaded', function() {
+			const emojiPicker = document.getElementById('emojiPicker');
+			const toggleButton = document.querySelector('.emoji-picker-button');
+			const textarea = document.getElementById('message');
+			const emojis = ['👍', '👎', '😀', '😁', '😂', '🤣', '😃', '😄', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘', '🥰', '😗', '😙', '😚', '🙂', '🤗', '🤩', '😇', '🥳', '😏', '😌', '😒', '😞', '😔', '😟', '😕', '🙃', '🤔', '🤨', '😳', '😬', '🥺', '😠', '😡', '🤯', '😭', '😱', '😤', '😪', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '😴', '😈', '👿', '👹', '👺', '💀', '👻', '👽', '🤖', '💩', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾', '🙈', '🙉', '🙊', '💋', '💌', '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️', '💔', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍'];
+			emojis.forEach(emoji => {
+				const button = document.createElement('button');
+				button.textContent = emoji;
+				button.style.border = 'none';
+				button.style.background = 'transparent';
+				button.style.cursor = 'pointer';
+				button.onclick = function() {
+					textarea.value += emoji;
+				};
+				emojiPicker.appendChild(button);
+			});
+			toggleButton.addEventListener('click', function() {
+				const isDisplayed = window.getComputedStyle(emojiPicker).display !== 'none';
+				emojiPicker.style.display = isDisplayed ? 'none' : 'block';
+			});
+
+			// Hide emoji picker when clicking outside
+			document.addEventListener('click', function(event) {
+				if (!emojiPicker.contains(event.target) && event.target !== toggleButton) {
+					emojiPicker.style.display = 'none';
+				}
+			});
+			textarea.addEventListener('keypress', function(event) {
+				if (event.key === "Enter" && !event.shiftKey) {
+					event.preventDefault(); // Prevent new line in textarea
 					sendMessage();
-				});
-				textarea.addEventListener('keydown', function(event) {
-					if (event.key === "Enter" && !event.shiftKey) {
-						event.preventDefault(); // Prevent new line
-						sendMessage(); // Send the message
-					}
-				});
-			});
-
-			var scrollDown = function() {
-				let chatBox = document.getElementById('chatBox');
-				chatBox.scrollTop = chatBox.scrollHeight;
-			}
-
-			scrollDown();
-
-			document.addEventListener('DOMContentLoaded', function() {
-				// Function to update last seen status
-				let lastSeenUpdate = function() {
-					$.get("../Public/Pages/Chat/app/ajax/update_last_seen.php");
-				};
-				lastSeenUpdate(); // Call immediately when the document is ready
-
-				// Interval for updating last seen status every 10 seconds
-				setInterval(lastSeenUpdate, 10000);
-
-				// Function to fetch new messages
-				let fetchData = function() {
-					let formData = new FormData(); // Initialize FormData object
-					formData.append('id_2', <?= $chatWith['id'] ?>); // Append the user ID with whom the chat is happening
-
-					$.ajax({
-						url: "../Public/Pages/Chat/app/ajax/getMessage.php",
-						type: "POST",
-						data: formData,
-						processData: false, // Prevent jQuery from automatically transforming the data into a query string
-						contentType: false, // Set the content type of the request to false to let the browser set it
-						success: function(response) {
-							const data = JSON.parse(response);
-
-							if (data.status === "success") {
-								if (data.html.trim().length > 0) {
-									$("#chatBox").append(data.html)
-
-									scrollDown();
-								}
-							} else {
-								console.error("Error in response:", data.message);
-							}
-						},
-						error: function(xhr, status, error) {
-							console.error("Error sending message:", xhr.responseText);
-						}
-					});
-				};
-
-				// Set interval to fetch new data every 500 milliseconds
-				setInterval(fetchData, 500);
-			});
-
-			document.addEventListener('DOMContentLoaded', function() {
-				const emojiPicker = document.getElementById('emojiPicker');
-				const toggleButton = document.querySelector('.emoji-picker-button');
-				const textarea = document.getElementById('message');
-				const emojis = ['👍', '👎', '😀', '😁', '😂', '🤣', '😃', '😄', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘', '🥰', '😗', '😙', '😚', '🙂', '🤗', '🤩', '😇', '🥳', '😏', '😌', '😒', '😞', '😔', '😟', '😕', '🙃', '🤔', '🤨', '😳', '😬', '🥺', '😠', '😡', '🤯', '😭', '😱', '😤', '😪', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '😴', '😈', '👿', '👹', '👺', '💀', '👻', '👽', '🤖', '💩', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾', '🙈', '🙉', '🙊', '💋', '💌', '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️', '💔', '❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍'];
-				emojis.forEach(emoji => {
-					const button = document.createElement('button');
-					button.textContent = emoji;
-					button.style.border = 'none';
-					button.style.background = 'transparent';
-					button.style.cursor = 'pointer';
-					button.onclick = function() {
-						textarea.value += emoji;
-					};
-					emojiPicker.appendChild(button);
-				});
-				toggleButton.addEventListener('click', function() {
-					const isDisplayed = window.getComputedStyle(emojiPicker).display !== 'none';
-					emojiPicker.style.display = isDisplayed ? 'none' : 'block';
-				});
-
-				// Hide emoji picker when clicking outside
-				document.addEventListener('click', function(event) {
-					if (!emojiPicker.contains(event.target) && event.target !== toggleButton) {
-						emojiPicker.style.display = 'none';
-					}
-				});
-				textarea.addEventListener('keypress', function(event) {
-					if (event.key === "Enter" && !event.shiftKey) {
-						event.preventDefault(); // Prevent new line in textarea
-						sendMessage();
-					}
-				});
-
-				function sendMessage() {
-					const message = textarea.value.trim();
-					if (message !== '') {
-						console.log('Message sent:', message);
-						textarea.value = ''; // Clear the textarea after sending
-					}
 				}
 			});
-		</script>
-		<?
-		?>
 
-	</main>
+			function sendMessage() {
+				const message = textarea.value.trim();
+				if (message !== '') {
+					console.log('Message sent:', message);
+					textarea.value = ''; // Clear the textarea after sending
+				}
+			}
+		});
+	</script>
 	<?php
-	include("./Public/Pages/Common/theme_custom.php");
-
-	?>
-	<?php
-	include("./Public/Pages/Common/settings_link.php");
-
-	?>
-	<?php
-	include("./Public/Pages/Common/scripts.php");
+	include("./Public/Pages/Common/script.php");
 
 	?>
 

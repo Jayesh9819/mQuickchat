@@ -9,5 +9,8 @@
                 <img src="img/core-img/logo.png" alt="">
             </a>
         </div>
+
+        <!-- Search Form-->
+        <a name="" id="" class="btn btn-danger" href="./LogOut" role="button">Log Out</a>
     </div>
 </div>

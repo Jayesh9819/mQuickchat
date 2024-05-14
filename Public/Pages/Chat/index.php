@@ -262,22 +262,13 @@
 </head>
 
 <body>
-	<!-- loader Start -->
-	<?php
-	// include("./Public/Pages/Common/loader.php");
-
-	?>
-	<!-- loader END -->
-
-	<!-- sidebar  -->
-	<?php
-	include("./Public/Pages/Common/sidebar.php");
-
-	?>
+<?php include("./Public/Pages/Common/loader.php");?>
+    <?php include("./Public/Pages/Common/header.php");?>
+    <?php include("./Public/Pages/Common/sidebar.php");?>
 
 
 
-	<div class="content-inner container-fluid pb-0" id="page_layout">
+    <div class="page-content-wrapper">
 		<div class="p-2 w-100
                 rounded shadow">
 			<?php if ($_SESSION['role'] == 'User') { ?>
@@ -555,7 +546,7 @@
 
 	</main>
 	<?php
-	include("./Public/Pages/Common/settings_link.php");
+	include("./Public/Pages/Common/footer.php");
 
 	?>
 	<?php
