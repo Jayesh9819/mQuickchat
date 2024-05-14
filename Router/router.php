@@ -19,6 +19,9 @@ if ($uri == $firstparam || $uri == $secondparam) {
         $prefix . $root . '/Redeem'                        => './Public/Pages/MobileUI/Redeem.php',
         $prefix . $root . '/LogOut'                        => './Public/Pages/Common/destroy_session.php',
         $prefix . $root . '/Offers'                        => './Public/Pages/MobileUI/offers.php',
+        $prefix . $root . '/Profile'                        => './Public/Pages/MobileUI/show_profile.php',
+        $prefix . $root . '/Refer'                        => './Public/Pages/MobileUI/referandearn.php',
+        $prefix . $root . '/Setting'                        => './Public/Pages/MobileUI/portal_settings.php',
 
 
 
