@@ -1,3 +1,5 @@
+<br>
+<br>
 <div class="header-area" id="headerArea">
     <div class="container h-100 d-flex align-items-center justify-content-between">
         <!-- Navbar Toggler-->
