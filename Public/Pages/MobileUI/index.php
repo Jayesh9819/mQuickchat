@@ -6,6 +6,7 @@ session_start();
 
 <head>
     <?php include("./Public/Pages/Common/head.php"); ?>
+    <?php include("./Public/Pages/Common/auth_user.php"); ?>
 
     <?php
     function echoToastScript($type, $message)
