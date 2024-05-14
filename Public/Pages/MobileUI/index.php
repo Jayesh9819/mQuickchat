@@ -1,15 +1,21 @@
+<?php
+session_start();
+if (!isset($_SESSION['role'])) {
+    header("Location: login.php"); // Redirect to login if no session exists
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <?php include("./Public/Pages/Common/head.php"); ?>
+
     <?php
-    include "./Public/Pages/Common/auth_user.php";
     function echoToastScript($type, $message)
     {
         echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
     }
-
 
     if (isset($_SESSION['toast'])) {
         $toast = $_SESSION['toast'];
@@ -17,15 +23,12 @@
         unset($_SESSION['toast']); // Clear the toast message from session
     }
 
-    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
-
     // Display error message if available
     if (isset($_SESSION['login_error'])) {
-        echo '<p class="error">' . $_SESSION['login_error'] . '</p>';
+        echo '<p class="error">' . htmlspecialchars($_SESSION['login_error']) . '</p>';
         unset($_SESSION['login_error']); // Clear the error message
     }
     ?>
-
 </head>
 
 <body>
@@ -57,30 +60,30 @@
                             $id = htmlspecialchars($row["id"]);
                             $branch = htmlspecialchars($row["branch"]);
                             $page = htmlspecialchars($row["page"]);
-                            $imagePath = $base_url."/uploads/" . $image; // Adjust the path as needed
-echo $imagePath;
+                            $imagePath = "https://quickchat.biz/uploads/" . $image; // Adjust the path as needed
+
                             // Check if essential elements are not null
                             if (!empty($title) && !empty($content) && !empty($image)) {
                                 echo "
-                <div class='single-hero-slide' style='background-image: url(\"{$imagePath}\")'>
-                    <!-- Background Shape-->
-                    <div class='background-shape'>
-                        <div class='circle2'></div>
-                        <div class='circle3'></div>
-                    </div>
-                    <div class='slide-content h-100 d-flex align-items-end'>
-                        <div class='container-fluid mb-3'>
-                            <a class='post-catagory' href='#'>{$upage}</a>
-                            <a class='post-title d-block' href='./Offers'>{$title}</a>
-                            <div class='post-meta d-flex align-items-center'>
-                                <a href='#'><i class='mr-1 lni lni-user'></i>User</a>
-                                <a href='#'><i class='mr-1 lni lni-calendar'></i>Today</a>
-                                <span><i class='mr-1 lni lni-bar-chart'></i>Read More</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                ";
+                                <div class='single-hero-slide' style='background-image: url(\"{$imagePath}\")'>
+                                    <!-- Background Shape-->
+                                    <div class='background-shape'>
+                                        <div class='circle2'></div>
+                                        <div class='circle3'></div>
+                                    </div>
+                                    <div class='slide-content h-100 d-flex align-items-end'>
+                                        <div class='container-fluid mb-3'>
+                                            <a class='post-catagory' href='#'>{$branch}</a>
+                                            <a class='post-title d-block' href='./Offers'>{$title}</a>
+                                            <div class='post-meta d-flex align-items-center'>
+                                                <a href='#'><i class='mr-1 lni lni-user'></i>User</a>
+                                                <a href='#'><i class='mr-1 lni lni-calendar'></i>Today</a>
+                                                <span><i class='mr-1 lni lni-bar-chart'></i>Read More</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                ";
                             }
                         }
                         echo '</div>'; // End the carousel
@@ -91,15 +94,12 @@ echo $imagePath;
                 ?>
             </div>
         </div>
-
-
     </div>
 
     <!-- Footer Nav -->
     <?php include("./Public/Pages/Common/footer.php"); ?>
 
     <?php include("./Public/Pages/Common/script.php"); ?>
-
 
 </body>
 
