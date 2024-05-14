@@ -56,7 +56,7 @@ session_start();
                             $id = htmlspecialchars($row["id"]);
                             $branch = htmlspecialchars($row["branch"]);
                             $page = htmlspecialchars($row["page"]);
-                            $imagePath = $base_url."/uploads/" . $image; // Adjust the path as needed
+                            $imagePath = $base_url.'/uploads/' . $image; // Adjust the path as needed
 
                             // Check if essential elements are not null
                             if (!empty($title) && !empty($content) && !empty($image)) {
