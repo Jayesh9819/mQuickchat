@@ -4,11 +4,10 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-	<?php
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>	<?php
 	ob_start();
 
-	include("./Public/Pages/Common/head.php");
+	include("./Public/Pages/Common/header.php");
 	include "./Public/Pages/Common/auth_user.php";
 	function echoToastScript($type, $message)
 	{
@@ -507,7 +506,7 @@
 	</div>
 
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
 	<script>
 		document.addEventListener("visibilitychange", function() {

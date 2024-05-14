@@ -455,32 +455,6 @@
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script>
-			function fetchConversations() {
-				$.ajax({
-					url: 'index.php', // Making an AJAX request to the same file
-					type: 'GET',
-					dataType: 'json',
-					success: function(data) {
-						console.log(data); // Process and display the conversations
-						// Update the HTML based on returned data
-						var html = '';
-						data.forEach(function(conv) {
-							html += '<div>' + conv.username + ' - Unread messages: ' + conv.unread_messages + '</div>';
-						});
-						document.getElementById('conversation-list').innerHTML = html;
-					},
-					error: function() {
-						console.error('Error fetching conversations.');
-					}
-				});
-			}
-
-			// Fetch conversations every 5 seconds
-			setInterval(fetchConversations, 1000);
-			// Also fetch them immediately on page load
-			fetchConversations();
-		</script>
-		<script>
 			$(document).ready(function() {
 
 				// Search

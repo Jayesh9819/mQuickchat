@@ -2,7 +2,7 @@
 <script src="../assets/js/popper.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/waypoints.min.js"></script>
-<script src="../assets/js/jquery.easing.min.js"></script>
+<!-- <script src="../assets/js/jquery.easing.min.js"></script> -->
 <script src="../assets/js/owl.carousel.min.js"></script>
 <script src="../assets/js/jquery.animatedheadline.min.js"></script>
 <script src="../assets/js/jquery.counterup.min.js"></script>
@@ -10,6 +10,5 @@
 <script src="../assets/js/date-clock.js"></script>
 <script src="../assets/js/dark-mode-switch.js"></script>
 <script src="../assets/js/active.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
