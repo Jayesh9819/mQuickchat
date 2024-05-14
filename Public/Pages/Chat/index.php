@@ -452,12 +452,11 @@
 				</div>
 		</div>
 
-
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script>
 			$(document).ready(function() {
 
-				// Search
+				// Search sd
 				$("#searchText").on("input", function() {
 					var searchText = $(this).val();
 					if (searchText == "") return;
