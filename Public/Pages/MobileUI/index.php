@@ -1,9 +1,5 @@
 <?php
 session_start();
-if (!isset($_SESSION['role'])) {
-    header("Location: login.php"); // Redirect to login if no session exists
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +56,7 @@ if (!isset($_SESSION['role'])) {
                             $id = htmlspecialchars($row["id"]);
                             $branch = htmlspecialchars($row["branch"]);
                             $page = htmlspecialchars($row["page"]);
-                            $imagePath = "https://quickchat.biz/uploads/" . $image; // Adjust the path as needed
+                            $imagePath = $base_url."/uploads/" . $image; // Adjust the path as needed
 
                             // Check if essential elements are not null
                             if (!empty($title) && !empty($content) && !empty($image)) {
