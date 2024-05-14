@@ -58,7 +58,7 @@
                             $branch = htmlspecialchars($row["branch"]);
                             $page = htmlspecialchars($row["page"]);
                             $imagePath = $base_url."/uploads/" . $image; // Adjust the path as needed
-
+echo $imagePath;
                             // Check if essential elements are not null
                             if (!empty($title) && !empty($content) && !empty($image)) {
                                 echo "
