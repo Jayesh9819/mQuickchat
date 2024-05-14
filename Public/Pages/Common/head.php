@@ -1,6 +1,6 @@
 <?php
 include "./App/helper/webset.php";
-
+$base_url='https:quickchat.biz';
 ?>
 
 

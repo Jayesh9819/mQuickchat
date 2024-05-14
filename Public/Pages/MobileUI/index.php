@@ -38,82 +38,58 @@
         <!-- News Today Wrapper-->
         <div class="news-today-wrapper">
             <div class="container">
-                <div class="d-flex align-items-center justify-content-between">
-                    <h5 class="mb-3 pl-1 newsten-title">News Today</h5>
-                    <p class="mb-3 line-height-1" id="dashboardDate2"></p>
+                <?php
+                $role = $_SESSION['role'];
+                if ($role == 'User') {
+
+                    include './App/db/db_connect.php';
+                    $ubranch = $_SESSION['branch1'];
+                    $upage = $_SESSION['page1'];
+                    $query = "SELECT * FROM offers WHERE (branch='$ubranch' AND (page LIKE '%$upage%' OR page ='ALL')) OR branch ='ALL' AND status=1";
+                    $result = mysqli_query($conn, $query);
+
+                    if (mysqli_num_rows($result) > 0) {
+                        echo '<div class="hero-slides owl-carousel">'; // Start the carousel
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $title = htmlspecialchars($row["name"]); // Escape special characters to prevent XSS
+                            $content = htmlspecialchars($row["content"]);
+                            $image = htmlspecialchars($row["image"]);
+                            $id = htmlspecialchars($row["id"]);
+                            $branch = htmlspecialchars($row["branch"]);
+                            $page = htmlspecialchars($row["page"]);
+                            $imagePath = $base_url."/uploads/" . $image; // Adjust the path as needed
+
+                            // Check if essential elements are not null
+                            if (!empty($title) && !empty($content) && !empty($image)) {
+                                echo "
+                <div class='single-hero-slide' style='background-image: url(\"{$imagePath}\")'>
+                    <!-- Background Shape-->
+                    <div class='background-shape'>
+                        <div class='circle2'></div>
+                        <div class='circle3'></div>
+                    </div>
+                    <div class='slide-content h-100 d-flex align-items-end'>
+                        <div class='container-fluid mb-3'>
+                            <a class='bookmark-post' href='#'><i class='lni lni-bookmark'></i></a>
+                            <a class='post-catagory' href='#'>{$upage}</a>
+                            <a class='post-title d-block' href='./Offers'>{$title}</a>
+                            <div class='post-meta d-flex align-items-center'>
+                                <a href='#'><i class='mr-1 lni lni-user'></i>User</a>
+                                <a href='#'><i class='mr-1 lni lni-calendar'></i>Today</a>
+                                <span><i class='mr-1 lni lni-bar-chart'></i>Read More</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Hero Slides-->
-                <div class="hero-slides owl-carousel">
-
-                    <!-- Single Hero Slide-->
-                    <div class="single-hero-slide" style="background-image: url('img/bg-img/4.jpg')">
-                        <!-- Background Shape-->
-                        <div class="background-shape">
-                            <div class="circle2"></div>
-                            <div class="circle3"></div>
-                        </div>
-                        <div class="slide-content h-100 d-flex align-items-end">
-                            <div class="container-fluid mb-3">
-                                <div class="video-icon">
-                                    <i class="lni lni-play"></i>
-                                </div>
-                                <a class="bookmark-post" href="#"><i class="lni lni-bookmark"></i></a>
-                                <a class="post-catagory" href="catagory.html">Politics</a>
-                                <a class="post-title d-block" href="single.html">Massive riots in the city to establish rule of law</a>
-                                <div class="post-meta d-flex align-items-center">
-                                    <a href="#"><i class="mr-1 lni lni-user"></i>Mayaj</a>
-                                    <a href="#"><i class="mr-1 lni lni-calendar"></i>26 March</a>
-                                    <span><i class="mr-1 lni lni-bar-chart"></i>4 min read</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Single Hero Slide-->
-                    <div class="single-hero-slide" style="background-image: url('img/bg-img/2.jpg')">
-                        <!-- Background Shape-->
-                        <div class="background-shape">
-                            <div class="circle2"></div>
-                            <div class="circle3"></div>
-                        </div>
-                        <div class="slide-content h-100 d-flex align-items-end">
-                            <div class="container-fluid mb-3">
-                                <a class="bookmark-post" href="#"><i class="lni lni-bookmark"></i></a>
-                                <a class="post-catagory" href="catagory.html">Fashion</a>
-                                <a class="post-title d-block" href="single.html">Fashion 2020: How to get the golden skin on the
-                                    outside</a>
-                                <div class="post-meta d-flex align-items-center">
-                                    <a href="#"><i class="mr-1 lni lni-user"></i>Lim</a>
-                                    <a href="#"><i class="mr-1 lni lni-calendar"></i>23 March</a>
-                                    <span><i class="mr-1 lni lni-bar-chart"></i>9 min read</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Single Hero Slide-->
-                    <div class="single-hero-slide" style="background-image: url('img/bg-img/5.jpg')">
-                        <!-- Background Shape-->
-                        <div class="background-shape">
-                            <div class="circle2"></div>
-                            <div class="circle3"></div>
-                        </div>
-                        <div class="slide-content h-100 d-flex align-items-end">
-                            <div class="container-fluid mb-3">
-                                <a class="bookmark-post" href="#"><i class="lni lni-bookmark"></i></a>
-                                <a class="post-catagory" href="catagory.html">Health</a>
-                                <a class="post-title d-block" href="single.html">Loses over 30kg on keto diet and one meal a day</a>
-                                <div class="post-meta d-flex align-items-center">
-                                    <a href="#"><i class="mr-1 lni lni-user"></i>Nazrul</a>
-                                    <a href="#"><i class="mr-1 lni lni-calendar"></i>21 March</a>
-                                    <span><i class="mr-1 lni lni-bar-chart"></i>3 min read</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                ";
+                            }
+                        }
+                        echo '</div>'; // End the carousel
+                    } else {
+                        echo "No results found.";
+                    }
+                }
+                ?>
             </div>
         </div>
 

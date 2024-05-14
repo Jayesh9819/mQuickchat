@@ -1,5 +1,6 @@
 <?php 
-require "./Router/router.php"
+ob_start();
+
+require "./Router/router.php";
 
 ?>
-
