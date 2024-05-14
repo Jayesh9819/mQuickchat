@@ -55,12 +55,6 @@
                     <button class="btn btn-primary btn-lg w-100">Login</button>
                 </form>
             </div>
-
-            <!-- Login Meta-->
-            <div class="login-meta-data text-center">
-                <a class="forgot-password d-block mt-3 mb-1" href="forget-password.html">Forgot Password?</a>
-                <p class="mb-0">Didn't have an account?<a class="ml-2" href="register.html">Register</a></p>
-            </div>
         </div>
     </div>
 
