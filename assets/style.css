@@ -638,7 +638,7 @@ textarea:invalid {
   transition-duration: 500ms;
   background-color: #ffffff;
   width: 100%;
-  height: 50px;
+  height: 100px;
   position: fixed;
   top: 0;
   left: 0;

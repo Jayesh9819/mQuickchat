@@ -1,8 +1,8 @@
-<br>
-<br>
 <div class="header-area" id="headerArea">
+<br>
+<br>
+
     <div class="container h-100 d-flex align-items-center justify-content-between">
-        <!-- Navbar Toggler-->
         <div class="navbar--toggler" id="newstenNavbarToggler"><span></span><span></span><span></span><span></span></div>
 
         <!-- Logo-->
