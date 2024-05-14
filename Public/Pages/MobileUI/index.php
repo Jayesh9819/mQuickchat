@@ -62,7 +62,7 @@
                             // Check if essential elements are not null
                             if (!empty($title) && !empty($content) && !empty($image)) {
                                 echo "
-                <div class='single-hero-slide' style='background-image: url("{$imagePath}")'>
+                <div class='single-hero-slide' style='background-image: url(\"{$imagePath}\")'>
                     <!-- Background Shape-->
                     <div class='background-shape'>
                         <div class='circle2'></div>
