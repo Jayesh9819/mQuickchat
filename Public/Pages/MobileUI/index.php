@@ -62,7 +62,7 @@
                             // Check if essential elements are not null
                             if (!empty($title) && !empty($content) && !empty($image)) {
                                 echo "
-                <div class='single-hero-slide' style='background-image: url(\"{$imagePath}\")'>
+                <div class='single-hero-slide' style='background-image: url("{$imagePath}")'>
                     <!-- Background Shape-->
                     <div class='background-shape'>
                         <div class='circle2'></div>
@@ -70,7 +70,6 @@
                     </div>
                     <div class='slide-content h-100 d-flex align-items-end'>
                         <div class='container-fluid mb-3'>
-                            <a class='bookmark-post' href='#'><i class='lni lni-bookmark'></i></a>
                             <a class='post-catagory' href='#'>{$upage}</a>
                             <a class='post-title d-block' href='./Offers'>{$title}</a>
                             <div class='post-meta d-flex align-items-center'>
