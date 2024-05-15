@@ -25,12 +25,24 @@ session_start();
         echo '<p class="error">' . htmlspecialchars($_SESSION['login_error']) . '</p>';
         unset($_SESSION['login_error']); // Clear the error message
     }
+    include './App/db/db_connect.php';
+
+    $username = $_SESSION['username'];
+    $query = "SELECT * FROM transaction WHERE username = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $results = $stmt->get_result();
+    // $transaction = $result->fetch_assoc();
+    // print_r($stmt);
+    // print_r($transaction);
     ?>
 </head>
 
 <body>
 
-    <?php include("./Public/Pages/Common/loader.php"); ?>
+    <?php //include("./Public/Pages/Common/loader.php"); 
+    ?>
     <?php include("./Public/Pages/Common/header.php"); ?>
     <?php include("./Public/Pages/Common/sidebar.php"); ?>
 
@@ -57,7 +69,7 @@ session_start();
                             $id = htmlspecialchars($row["id"]);
                             $branch = htmlspecialchars($row["branch"]);
                             $page = htmlspecialchars($row["page"]);
-                            $imagePath = $base_url.'/uploads/' . $image; // Adjust the path as needed
+                            $imagePath = $base_url . '/uploads/' . $image; // Adjust the path as needed
 
                             // Check if essential elements are not null
                             if (!empty($title) && !empty($content) && !empty($image)) {
@@ -91,6 +103,49 @@ session_start();
                 ?>
             </div>
         </div>
+        <div class="container">
+            <?php
+            if ($results) {
+                while ($transaction = $results->fetch_assoc()) : ?>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Redemption Status</h5>
+                            <?php
+                            $approvalStatus = $transaction['approval_status'];
+                            $cashoutStatus = $transaction['cashout_status'];
+                            $redeemStatus = $transaction['redeem_status'];
+                            $reason = ($transaction['Reject_msg']);
+
+                            if ($approvalStatus == 0) {
+                                echo "<p class='card-text text-warning'>Approval is pending.</p>";
+                            } elseif ($approvalStatus == 1) {
+                                if ($cashoutStatus == 0 || $redeemStatus == 0) {
+                                    echo "<p class='card-text text-warning'>Redemption is pending.</p>";
+                                } else {
+                                    echo "<p class='card-text text-success'>Redemption is complete.</p>";
+                                }
+                            } elseif ($approvalStatus == 2) {
+                                echo "<p class='card-text text-danger'>Redemption rejected. Reason: $reason</p>";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            <?php
+            } else {
+                echo
+                '<div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">No Redemption</h5>
+                    <p class="card-text">You have no redemption requests.</p>
+                </div>
+            </div>';
+            }
+
+            ?>
+        </div>
+    </div>
+
     </div>
 
     <!-- Footer Nav -->
