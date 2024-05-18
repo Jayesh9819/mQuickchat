@@ -152,7 +152,7 @@ session_start();
     <?php include("./Public/Pages/Common/footer.php"); ?>
     <script>
         function sendSessionDataToFlutter() {
-            var userId = "<?php echo $_SESSION['userid']; ?>"; // Getting user ID from PHP session
+            var userId = "<?php echo $_SESSION['userid']; ?>"; 
             if (window.Flutter) {
                 Flutter.postMessage(userId);
             }

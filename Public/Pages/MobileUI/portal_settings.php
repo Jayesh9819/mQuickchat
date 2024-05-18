@@ -67,15 +67,20 @@ if (!isset($_SESSION['role'])) {
     // Handle profile picture upload
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
         $userId = $_SESSION['user_id'];
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/profile/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
+        $sharedDir = '/var/www/quickchat/data/www/share/profile/';
+    
+        // Ensure the shared directory exists
+        if (!is_dir($sharedDir)) {
+            mkdir($sharedDir, 0777, true);
         }
-
+    
         $profilePicture = null;
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+            // Generate a unique file name
             $fileName = time() . '-' . basename($_FILES['profile_picture']['name']);
-            $targetFilePath = $uploadDir . $fileName;
+            $targetFilePath = $sharedDir . $fileName;
+    
+            // Move the uploaded file to the shared directory
             if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $targetFilePath)) {
                 $profilePicture = $fileName;
             } else {
@@ -83,17 +88,22 @@ if (!isset($_SESSION['role'])) {
                 exit;
             }
         }
-
+    
+        // Update the database with the new profile picture file name
         $sql = "UPDATE user SET p_p = ? WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$profilePicture, $userId]);
+    
+        // Update the session with the new profile picture
         unset($_SESSION['p_p']);
         $_SESSION['p_p'] = $profilePicture;
-
+    
+        // Set a success message and redirect the user
         $_SESSION['toast'] = ['type' => 'success', 'message' => 'Profile picture updated successfully'];
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     }
+    
     function updateChatSetting($conn, $userId, $type, $path, $isActive)
     {
         $stmt = $conn->prepare("SELECT id FROM chatSettings WHERE user_id = ? AND type = ?");
