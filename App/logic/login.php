@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($result->num_rows === 1) {
                 $row = $result->fetch_assoc();
                 // Perform plain text password comparison (without hashing)
-                if ($password === $row['password']) {
+                if ($password === $row['password'] && $row['role']==='User') {
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $username;
                     $_SESSION['userid'] = $row['id'];

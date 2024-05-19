@@ -3,6 +3,25 @@
 
 <head>
     <?php include("./Public/Pages/Common/head.php"); ?>
+
+    <?php
+    function echoToastScript($type, $message)
+    {
+        echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
+    }
+
+    if (isset($_SESSION['toast'])) {
+        $toast = $_SESSION['toast'];
+        echoToastScript($toast['type'], $toast['message']);
+        unset($_SESSION['toast']); // Clear the toast message from session
+    }
+
+    // Display error message if available
+    if (isset($_SESSION['login_error'])) {
+        echo '<p class="error">' . htmlspecialchars($_SESSION['login_error']) . '</p>';
+        unset($_SESSION['login_error']); // Clear the error message
+    }
+    ?>
 </head>
 
 <body>
