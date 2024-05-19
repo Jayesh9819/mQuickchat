@@ -21,7 +21,7 @@ if (isset($_POST['message'], $_POST['to_id'])) {
 
 	$from_id = $_SESSION['user_id'];
 	// $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-	$uploadDir = '/var/www/quickchat/data/www/share/profile/';
+	$uploadDir = '/var/www/quickchat/data/www/share/';
 
 
 	if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
