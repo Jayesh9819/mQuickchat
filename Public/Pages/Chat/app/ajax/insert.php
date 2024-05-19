@@ -20,7 +20,9 @@ if (isset($_POST['message'], $_POST['to_id'])) {
 	$reply_id = $_POST['reply_to_id'] ?? null;
 
 	$from_id = $_SESSION['user_id'];
-	$uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+	// $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+	$uploadDir = '/var/www/quickchat/data/www/share/profile/';
+
 
 	if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
 		echo json_encode(['status' => 'error', 'message' => 'Failed to create upload directory']);
