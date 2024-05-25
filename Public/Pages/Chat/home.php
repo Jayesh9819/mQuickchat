@@ -636,7 +636,7 @@
 				const message = document.getElementById('message').value.trim();
 				const fileInput = document.getElementById('fileInput');
 				console.log('Message:', message);
-				console.log('FileInput:', fileInput);
+				console.log('FileInput files:', fileInput.files);
 				if (message == '' && fileInput == '') {
 					console.error('Cannot send an empty message.');
 					return; // Exit the function if message is empty
