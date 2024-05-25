@@ -632,12 +632,9 @@
 			const sendBtn = document.getElementById('sendBtn'); // Reference to the send button
 			// Ensure sendMessage incorporates replyToId
 			function sendMessage() {
-				console.log("this is exexcuting");
 				const message = document.getElementById('message').value.trim();
 				const fileInput = document.getElementById('fileInput');
-				console.log('Message:', message);
 				if (message.trim() === '' && fileInput.files.length === 0) {
-					console.error('Cannot send an empty message.');
 					return; // Exit the function if message is empty and no file is selected
 				}
 
