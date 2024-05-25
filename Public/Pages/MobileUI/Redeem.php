@@ -55,7 +55,7 @@
 
         <div class="container mt-5">
             <h2>Enter the Details Correctly</h2>
-            <form action="../App/Logic/creation.php?action=CashOut" method="post">
+            <form action="../App/logic/creation.php?action=CashOut" method="post">
                 <div class="form-group">
                     <label for="username">Enter the User Name</label>
                     <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($depositID); ?>" readonly>
