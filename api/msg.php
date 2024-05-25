@@ -5,10 +5,7 @@ include_once '../App/db/db_connect.php';
 // Function to send FCM notification
 function sendFCMNotification($userId, $title, $body)
 {
-    echo "this is execu";
-    echo $title;
-    echo $body;
-    echo $userId;
+   
     include '../App/db/db_connect.php';
     $sql = "SELECT fcm_token FROM user_tokens WHERE user_id = ?";
     $stmt = $conn->prepare($sql);

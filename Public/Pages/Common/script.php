@@ -20,7 +20,7 @@ include './Public/Popup/popup.php'
         let lastSeenUpdate = function() {
             $.get('../Public/Pages/Chat/app/ajax/update_last_seen.php')
                 .done(function(data) {
-                    console.log('Success:', data); // Successful response handling
+                    // console.log('Success:', data); // Successful response handling
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     console.error('AJAX Error:', textStatus); // Error handling
@@ -36,7 +36,7 @@ include './Public/Popup/popup.php'
         let lastSeenUpdat = function() {
             $.get('../api/notification.php')
                 .done(function(data) {
-                    console.log('Success:', data); // Successful response handling
+                    // console.log('Success:', data); // Successful response handling
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     console.error('AJAX Error:', textStatus); // Error handling
