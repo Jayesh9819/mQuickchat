@@ -4,56 +4,56 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>	<?php
-	ob_start();
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script> <?php
+																																							ob_start();
 
-	include("./Public/Pages/Common/head.php");
-	include "./Public/Pages/Common/auth_user.php";
-	function echoToastScript($type, $message)
-	{
-		echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
-	}
+																																							include("./Public/Pages/Common/head.php");
+																																							include "./Public/Pages/Common/auth_user.php";
+																																							function echoToastScript($type, $message)
+																																							{
+																																								echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
+																																							}
 
 
-	if (isset($_SESSION['toast'])) {
-		$toast = $_SESSION['toast'];
-		echoToastScript($toast['type'], $toast['message']);
-		unset($_SESSION['toast']); // Clear the toast message from session
-	}
+																																							if (isset($_SESSION['toast'])) {
+																																								$toast = $_SESSION['toast'];
+																																								echoToastScript($toast['type'], $toast['message']);
+																																								unset($_SESSION['toast']); // Clear the toast message from session
+																																							}
 
-	if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+																																							if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-	// Display error message if available
-	if (isset($_SESSION['login_error'])) {
-		echo '<p class="error">' . $_SESSION['login_error'] . '</p>';
-		unset($_SESSION['login_error']); // Clear the error message
-	}
-	if (isset($_SESSION['username'])) {
-		# database connection file
-		include 'app/db.conn.php';
+																																							// Display error message if available
+																																							if (isset($_SESSION['login_error'])) {
+																																								echo '<p class="error">' . $_SESSION['login_error'] . '</p>';
+																																								unset($_SESSION['login_error']); // Clear the error message
+																																							}
+																																							if (isset($_SESSION['username'])) {
+																																								# database connection file
+																																								include 'app/db.conn.php';
 
-		include 'app/helpers/user.php';
-		include 'app/helpers/chat.php';
-		include 'app/helpers/opened.php';
+																																								include 'app/helpers/user.php';
+																																								include 'app/helpers/chat.php';
+																																								include 'app/helpers/opened.php';
 
-		include 'app/helpers/timeAgo.php';
+																																								include 'app/helpers/timeAgo.php';
 
-		if (!isset($_GET['user'])) {
-			header("Location: ./Chat_l");
-			exit;
-		}
+																																								if (!isset($_GET['user'])) {
+																																									header("Location: ./Chat_l");
+																																									exit;
+																																								}
 
-		# Getting User data data
-		$chatWith = getUser($_GET['user'], $conn);
-		if (empty($chatWith)) {
-			header("Location: ./Chat_l");
-			exit;
-		}
+																																								# Getting User data data
+																																								$chatWith = getUser($_GET['user'], $conn);
+																																								if (empty($chatWith)) {
+																																									header("Location: ./Chat_l");
+																																									exit;
+																																								}
 
-		$chats = getChats($_SESSION['user_id'], $chatWith['id'], $conn);
-		opened($chatWith['id'], $conn, $chats);
-	}
-	?>
+																																								$chats = getChats($_SESSION['user_id'], $chatWith['id'], $conn);
+																																								opened($chatWith['id'], $conn, $chats);
+																																							}
+																																							?>
 
 	<style>
 		.chat-header {
@@ -325,7 +325,7 @@
 <body>
 
 
-	<div class="page-content-wrapper" style="margin-top: 0%;" >
+	<div class="page-content-wrapper" style="margin-top: 0%;">
 		<div class=" rounded" style="height:92vh;width:100%;">
 
 			<div class="chat-header" style=" width: 100%; padding: 10px; display: flex; align-items: center;">
@@ -399,7 +399,7 @@
 
 
 								<button class="replyButtonsss" style="background: none; border: none; cursor: pointer; position:relative; bottom:30px;" onclick="setReplyTo(<?= $chat['chat_id'] ?>, '<?= addslashes(htmlspecialchars($chat['message'])) ?>')">
-								<i class="lni lni-reply"></i>
+									<i class="lni lni-reply"></i>
 
 								</button>
 
@@ -634,9 +634,10 @@
 			function sendMessage() {
 				console.log("this is exexcuting");
 				const message = document.getElementById('message').value.trim();
-				const fileInput = document.getElementById('fileInput');
-
-				if (message == '' && fileInput =='' ) {
+				const fileInput = document.getElementById('attachment');
+				console.log('Message:', message);
+				console.log('attachment:', fileInput);
+				if (message == '' && fileInput == '') {
 					console.error('Cannot send an empty message.');
 					return; // Exit the function if message is empty
 				}
