@@ -21,7 +21,7 @@ if ($result = $conn->query($sql)) {
             echo sendFCMNotification($row['to_id'], $row['from_name'], $row['message']);
 
             // Update the notified status to 1
-            $updateSql = "UPDATE chats SET notified = 1 WHERE id = " . $row['chat_id'];
+            $updateSql = "UPDATE chats SET notified = 1 WHERE chat_id = " . $row['chat_id'];
             if (!$conn->query($updateSql)) {
                 error_log("SQL update error: " . $conn->error);
             }
