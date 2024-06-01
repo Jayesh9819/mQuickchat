@@ -25,7 +25,7 @@ if ($result = $conn->query($sql)) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $notificationMessage = "You have a new message from " . $row['from_name'];
-            echo sendFCMNotification($row['to_id'], "New Message", $notificationMessage);
+            echo sendFCMNotification($row['to_id'],$row['from_name'] , $row['message']);
 
             // Update the notified status to 1
             $updateSql = "UPDATE chats SET notified = 1 WHERE chat_id = " . $row['chat_id'];
