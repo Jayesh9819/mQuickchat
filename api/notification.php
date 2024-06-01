@@ -114,7 +114,7 @@ if ($result = $conn->query($sql)) {
                     echo "Prepare statement error: " . $conn->error . "<br>";
                     continue;
                 }
-                $stmtTransaction->bind_param("i", $transaction['id']);
+                $stmtTransaction->bind_param("i", $transaction['tid']);
                 $stmtTransaction->execute();
                 $resultTransaction = $stmtTransaction->get_result();
 
