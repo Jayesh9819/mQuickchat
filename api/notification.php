@@ -107,7 +107,6 @@ if ($result = $conn->query($sql)) {
                                        AND Redeem IS NOT NULL 
                                        AND (redeem_status = 1 AND cashout_status = 1) 
                                        AND tid = ?";
-                    $notificationMessage = "Your redeem request for amount {$row['redeem']} has been Sucessfully done by the {$row['approved_by']}";
                 } else {
                     echo "Unhandled role: $role for username: $username<br>";
                     continue;
@@ -124,6 +123,12 @@ if ($result = $conn->query($sql)) {
 
                 if ($resultTransaction->num_rows > 0) {
                     $row = $resultTransaction->fetch_assoc();
+                    if($role === 'User'){
+                        $notificationMessage = "Your redeem request for amount {$row['redeem']} has been Sucessfully done by the {$row['approved_by']}";
+                    }else{
+                        $notificationMessage = "You have a new redeem request from {$row['username']} for amount {$row['redeem']}";
+
+                    }
                     echo sendFCMNotification($userId, "Redeem Request", $notificationMessage);
 
                     // Update the notified status to 1
