@@ -124,12 +124,12 @@ if ($result = $conn->query($sql)) {
                     echo sendFCMNotification($userId, "Redeem Request", $notificationMessage);
 
                     // Update the notified status to 1
-                    $updateSql = "UPDATE transaction SET notified = 1 WHERE id = " . $row['id'];
+                    $updateSql = "UPDATE transaction SET notified = 1 WHERE tid = " . $row['tid'];
                     if (!$conn->query($updateSql)) {
                         echo "SQL update error: " . $conn->error . "<br>";
                     }
                 } else {
-                    echo "No transaction found matching the criteria for transaction ID: {$transaction['id']}<br>";
+                    echo "No transaction found matching the criteria for transaction ID: {$transaction['tid']}<br>";
                 }
             } else {
                 echo "User not found for username: $username<br>";
