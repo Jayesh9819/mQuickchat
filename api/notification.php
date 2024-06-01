@@ -83,7 +83,7 @@ if ($result = $conn->query($sql)) {
                                        WHERE Redeem != 0 
                                        AND Redeem IS NOT NULL $whereClause 
                                        AND approval_status = 0 
-                                       AND id = ?";
+                                       AND tid = ?";
                 } elseif ($role === 'Manager' || $role === 'Supervisor') {
                     $transactionSql = "SELECT * FROM transaction 
                                        WHERE Redeem != 0 
@@ -91,19 +91,19 @@ if ($result = $conn->query($sql)) {
                                        AND (redeem_status = 0 OR cashout_status = 0) 
                                        AND branch = '$branch' 
                                        AND approval_status = 1 
-                                       AND id = ?";
+                                       AND tid = ?";
                 } elseif ($role === 'Admin') {
                     $transactionSql = "SELECT * FROM transaction 
                                        WHERE Redeem != 0 
                                        AND Redeem IS NOT NULL 
                                        AND (redeem_status = 0 OR cashout_status = 0) 
-                                       AND id = ?";
+                                       AND tid = ?";
                 } elseif ($role === 'User') {
                     $transactionSql = "SELECT * FROM transaction 
                                        WHERE Redeem != 0 
                                        AND Redeem IS NOT NULL 
                                        AND (redeem_status = 1 AND cashout_status = 1) 
-                                       AND id = ?";
+                                       AND tid = ?";
                 } else {
                     echo "Unhandled role: $role for username: $username<br>";
                     continue;
