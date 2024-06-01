@@ -7,7 +7,7 @@ include '../App/db/db_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
-ini_set('error_log', '/path/to/your/error.log'); // Make sure this path is writable by the web server
+ini_set('error_log', 'error.log'); // Make sure this path is writable by the web server
 
 $userid = $_SESSION['userid'] ?? null;
 
@@ -48,7 +48,7 @@ if ($result = $conn->query($sql)) {
     if ($result->num_rows > 0) {
         while ($transaction = $result->fetch_assoc()) {
             $username = $transaction['username'];
-            error_log("Processing transaction for username: $username");
+            print_r("Processing transaction for username: $username");
 
             // Fetch user details using the username
             $userSql = "SELECT id, role, branchname AS branch, pagename FROM user WHERE username = ?";
