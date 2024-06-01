@@ -84,6 +84,7 @@ if ($result = $conn->query($sql)) {
                                        AND Redeem IS NOT NULL $whereClause 
                                        AND approval_status = 0 
                                        AND tid = ?";
+                    $notificationMessage = "You have a new redeem request from {$row['username']} for amount {$row['redeem']}";
                 } elseif ($role === 'Manager' || $role === 'Supervisor') {
                     $transactionSql = "SELECT * FROM transaction 
                                        WHERE Redeem != 0 
@@ -92,12 +93,14 @@ if ($result = $conn->query($sql)) {
                                        AND branch = '$branch' 
                                        AND approval_status = 1 
                                        AND tid = ?";
+                    $notificationMessage = "You have a new redeem request from {$row['username']} for amount {$row['redeem']}";
                 } elseif ($role === 'Admin') {
                     $transactionSql = "SELECT * FROM transaction 
                                        WHERE Redeem != 0 
                                        AND Redeem IS NOT NULL 
                                        AND (redeem_status = 0 OR cashout_status = 0) 
                                        AND tid = ?";
+                    $notificationMessage = "You have a new redeem request from {$row['username']} for amount {$row['redeem']}";
                 } elseif ($role === 'User') {
                     $transactionSql = "SELECT * FROM transaction 
                                        WHERE Redeem != 0 
