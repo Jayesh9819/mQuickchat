@@ -6,13 +6,11 @@ include '../App/db/db_connect.php';
 // Enable error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-// ini_set('log_errors', 1);
-// ini_set('error_log', 'error.log'); // Make sure this path is writable by the web server
 
 $userid = $_SESSION['userid'] ?? null;
 
 if (!$userid) {
-    error_log("User ID not set in session.");
+    echo "User ID not set in session.";
     exit;
 }
 
@@ -32,14 +30,14 @@ if ($result = $conn->query($sql)) {
             // Update the notified status to 1
             $updateSql = "UPDATE chats SET notified = 1 WHERE chat_id = " . $row['chat_id'];
             if (!$conn->query($updateSql)) {
-                error_log("SQL update error: " . $conn->error);
+                echo "SQL update error: " . $conn->error;
             }
         }
     } else {
-        error_log("No new chat notifications found.");
+        echo "No new chat notifications found.";
     }
 } else {
-    error_log("SQL error in chat notification query: " . $conn->error);
+    echo "SQL error in chat notification query: " . $conn->error;
 }
 
 // Transaction notification 
@@ -48,13 +46,13 @@ if ($result = $conn->query($sql)) {
     if ($result->num_rows > 0) {
         while ($transaction = $result->fetch_assoc()) {
             $username = $transaction['username'];
-            print_r("Processing transaction for username: $username");
+            echo "Processing transaction for username: $username<br>";
 
             // Fetch user details using the username
             $userSql = "SELECT id, role, branchname AS branch, pagename FROM user WHERE username = ?";
             $stmtUser = $conn->prepare($userSql);
             if (!$stmtUser) {
-                error_log("Prepare statement error: " . $conn->error);
+                echo "Prepare statement error: " . $conn->error . "<br>";
                 continue;
             }
             $stmtUser->bind_param("s", $username);
@@ -66,7 +64,7 @@ if ($result = $conn->query($sql)) {
                 $branch = $user['branch'];
                 $userId = $user['id'];
                 $pagelist = $user['pagename'] ?? '';
-                error_log("Fetched user details for username: $username, role: $role");
+                echo "Fetched user details for username: $username, role: $role<br>";
 
                 // Custom condition based on the role
                 if ($role === 'Agent') {
@@ -101,13 +99,13 @@ if ($result = $conn->query($sql)) {
                                        AND (redeem_status = 0 OR cashout_status = 0) 
                                        AND id = ?";
                 } else {
-                    error_log("Unhandled role: $role for username: $username");
+                    echo "Unhandled role: $role for username: $username<br>";
                     continue;
                 }
 
                 $stmtTransaction = $conn->prepare($transactionSql);
                 if (!$stmtTransaction) {
-                    error_log("Prepare statement error: " . $conn->error);
+                    echo "Prepare statement error: " . $conn->error . "<br>";
                     continue;
                 }
                 $stmtTransaction->bind_param("i", $transaction['id']);
@@ -122,20 +120,20 @@ if ($result = $conn->query($sql)) {
                     // Update the notified status to 1
                     $updateSql = "UPDATE transaction SET notified = 1 WHERE id = " . $row['id'];
                     if (!$conn->query($updateSql)) {
-                        error_log("SQL update error: " . $conn->error);
+                        echo "SQL update error: " . $conn->error . "<br>";
                     }
                 } else {
-                    error_log("No transaction found matching the criteria for transaction ID: {$transaction['id']}");
+                    echo "No transaction found matching the criteria for transaction ID: {$transaction['id']}<br>";
                 }
             } else {
-                error_log("User not found for username: $username");
+                echo "User not found for username: $username<br>";
             }
         }
     } else {
-        error_log("No new transactions to notify.");
+        echo "No new transactions to notify.<br>";
     }
 } else {
-    error_log("SQL error in transaction notification query: " . $conn->error);
+    echo "SQL error in transaction notification query: " . $conn->error . "<br>";
 }
 
 // Additional chat notifications for current user
@@ -155,14 +153,14 @@ if ($result = $conn->query($sql)) {
             // Update the notified status to 1
             $updateSql = "UPDATE chats SET notified = 1 WHERE id = " . $row['id'];
             if (!$conn->query($updateSql)) {
-                error_log("SQL update error: " . $conn->error);
+                echo "SQL update error: " . $conn->error . "<br>";
             }
         }
     } else {
-        error_log("No new chat notifications found for user ID: $userid.");
+        echo "No new chat notifications found for user ID: $userid.<br>";
     }
 } else {
-    error_log("SQL error in additional chat notification query: " . $conn->error);
+    echo "SQL error in additional chat notification query: " . $conn->error . "<br>";
 }
 
 // Notification for successfully done transactions
@@ -213,14 +211,14 @@ if ($result = $conn->query($sql)) {
             // Update the notified status to 1
             $updateSql = "UPDATE transaction SET notified = 1 WHERE id = " . $row['id'];
             if (!$conn->query($updateSql)) {
-                error_log("SQL update error: " . $conn->error);
+                echo "SQL update error: " . $conn->error . "<br>";
             }
         }
     } else {
-        error_log("No transactions found for successful notification.");
+        echo "No transactions found for successful notification.<br>";
     }
 } else {
-    error_log("SQL error in successful transaction notification query: " . $conn->error);
+    echo "SQL error in successful transaction notification query: " . $conn->error . "<br>";
 }
 
 // Notification for failed transactions
@@ -271,14 +269,14 @@ if ($result = $conn->query($sql)) {
             // Update the notified status to 1
             $updateSql = "UPDATE transaction SET notified = 1 WHERE id = " . $row['id'];
             if (!$conn->query($updateSql)) {
-                error_log("SQL update error: " . $conn->error);
+                echo "SQL update error: " . $conn->error . "<br>";
             }
         }
     } else {
-        error_log("No failed transactions found for notification.");
+        echo "No failed transactions found for notification.<br>";
     }
 } else {
-    error_log("SQL error in failed transaction notification query: " . $conn->error);
+    echo "SQL error in failed transaction notification query: " . $conn->error . "<br>";
 }
 
 $conn->close();
