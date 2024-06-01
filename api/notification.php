@@ -98,6 +98,12 @@ if ($result = $conn->query($sql)) {
                                        AND Redeem IS NOT NULL 
                                        AND (redeem_status = 0 OR cashout_status = 0) 
                                        AND id = ?";
+                } elseif ($role === 'User') {
+                    $transactionSql = "SELECT * FROM transaction 
+                                       WHERE Redeem != 0 
+                                       AND Redeem IS NOT NULL 
+                                       AND (redeem_status = 1 AND cashout_status = 1) 
+                                       AND id = ?";
                 } else {
                     echo "Unhandled role: $role for username: $username<br>";
                     continue;
