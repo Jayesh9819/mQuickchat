@@ -123,11 +123,10 @@ if ($result = $conn->query($sql)) {
 
                 if ($resultTransaction->num_rows > 0) {
                     $row = $resultTransaction->fetch_assoc();
-                    if($role === 'User'){
+                    if ($role === 'User') {
                         $notificationMessage = "Your redeem request for amount {$row['redeem']} has been Sucessfully done by the {$row['approved_by']}";
-                    }else{
+                    } else {
                         $notificationMessage = "You have a new redeem request from {$row['username']} for amount {$row['redeem']}";
-
                     }
                     echo sendFCMNotification($userId, "Redeem Request", $notificationMessage);
 
@@ -151,38 +150,12 @@ if ($result = $conn->query($sql)) {
 }
 
 // Additional chat notifications for current user
-$sql = "SELECT chats.*, user.name AS from_name, user.id AS to_id 
-        FROM chats 
-        JOIN user ON chats.from_id = user.id 
-        WHERE chats.opened = 0 
-        AND chats.to_id = $userid 
-        AND chats.notified = 0 
-        AND chats.created_at >= NOW() - INTERVAL 2 SECOND";
-if ($result = $conn->query($sql)) {
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $notificationMessage = "You have a new message from " . $row['from_name'];
-            echo sendFCMNotification($row['to_id'], "New Message", $notificationMessage);
-
-            // Update the notified status to 1
-            $updateSql = "UPDATE chats SET notified = 1 WHERE id = " . $row['id'];
-            if (!$conn->query($updateSql)) {
-                echo "SQL update error: " . $conn->error . "<br>";
-            }
-        }
-    } else {
-        echo "No new chat notifications found for user ID: $userid.<br>";
-    }
-} else {
-    echo "SQL error in additional chat notification query: " . $conn->error . "<br>";
-}
 
 // Notification for successfully done transactions
 $sql = "SELECT * FROM transaction WHERE approval_status = 1 
         AND cashout_status = 1 AND redeem_status = 1 
         AND branch = '$branch' 
-        AND transaction.notified = 0 
-        AND updated_at >= NOW() - INTERVAL 2 SECOND";
+        AND transaction.notified = 0;";
 if ($result = $conn->query($sql)) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
