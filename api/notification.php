@@ -30,4 +30,30 @@ if ($result = $conn->query($sql)) {
 } else {
     error_log("SQL error: " . $conn->error);
 }
+
+// transaction notification 
+$transactionSql = "SELECT transaction.*, user.id AS uidi, user.name AS from_name 
+                   FROM transaction 
+                   JOIN user ON transaction.username = user.username 
+                   WHERE transaction.notified = 0;";
+
+if ($result = $conn->query($transactionSql)) {
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $notificationMessage = "You have a new transaction notification. From " . $row['from_name'];
+            $url = "./Portal_Transactions"; // Assuming there's a generic transactions URL
+            $color = "medium"; 
+            echo sendFCMNotification($row['uidi'], $row['from_name'], $notificationMessage);
+
+            // Update the notified status to 1
+            $updateTransactionSql = "UPDATE transactions SET notified = 1 WHERE id = " . $row['id'];
+            if (!$conn->query($updateTransactionSql)) {
+                error_log("SQL update error: " . $conn->error);
+            }
+        }
+    }
+} else {
+    error_log("SQL error: " . $conn->error);
+}
+
 ?>
