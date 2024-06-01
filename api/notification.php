@@ -6,8 +6,8 @@ include '../App/db/db_connect.php';
 // Enable error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-ini_set('log_errors', 1);
-ini_set('error_log', 'error.log'); // Make sure this path is writable by the web server
+// ini_set('log_errors', 1);
+// ini_set('error_log', 'error.log'); // Make sure this path is writable by the web server
 
 $userid = $_SESSION['userid'] ?? null;
 
