@@ -266,4 +266,5 @@ if ($result = $conn->query($sql)) {
     echo "SQL error in failed transaction notification query: " . $conn->error . "<br>";
 }
 
+
 $conn->close();
