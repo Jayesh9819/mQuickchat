@@ -157,6 +157,15 @@ session_start();
                 Flutter.postMessage(userId);
             }
         }
+        function sendUserIdToApp() {
+            if (window.webkit && window.webkit.messageHandlers.getUserId) {
+                window.webkit.messageHandlers.getUserId.postMessage(userId);
+                console.log("Sende to App");
+            }
+        }
+
+        // Call the function to send the user ID
+        sendUserIdToApp();
     </script>
     <?php include("./Public/Pages/Common/script.php"); ?>
 
