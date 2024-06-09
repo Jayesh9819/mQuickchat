@@ -40,6 +40,21 @@ session_start();
 </head>
 
 <body onload="sendSessionDataToFlutter();">
+<script type="text/javascript">
+        // Embed the user ID in a JavaScript variable
+        var userId = "<?php echo $_SESSION['userid']; ?>"; 
+
+        // Function to send the user ID to the SwiftUI app
+        function sendUserIdToApp() {
+            if (window.webkit && window.webkit.messageHandlers.getUserId) {
+                window.webkit.messageHandlers.getUserId.postMessage(userId);
+            }
+        }
+
+        // Call the function to send the user ID
+        sendUserIdToApp();
+    </script>
+
 
     <?php //include("./Public/Pages/Common/loader.php"); 
     ?>
