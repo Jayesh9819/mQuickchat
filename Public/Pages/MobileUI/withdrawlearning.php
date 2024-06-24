@@ -161,22 +161,9 @@
     <!-- Wrapper End-->
     <!-- Live Customizer start -->
     <!-- Setting offcanvas start here -->
-    <?php
-    include("./Public/Pages/Common/theme_custom.php");
-
-    ?>
-
-    <!-- Settings sidebar end here -->
-
-    <?php
-    include("./Public/Pages/Common/settings_link.php");
-
-    ?>
-    <!-- Live Customizer end -->
-
     <!-- Library Bundle Script -->
     <?php
-    include("./Public/Pages/Common/scripts.php");
+    include("./Public/Pages/Common/script.php");
 
     ?>
 
