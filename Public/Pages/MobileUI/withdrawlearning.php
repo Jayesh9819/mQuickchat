@@ -91,7 +91,7 @@
     <!-- loader END -->
 
     <!-- sidebar  -->
-    <?php include("./Public/Pages/Common/loader.php"); ?>
+    <!-- <?php include("./Public/Pages/Common/loader.php"); ?> -->
 
     <!-- Header Area-->
     <?php include("./Public/Pages/Common/header.php"); ?>
