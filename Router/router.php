@@ -23,6 +23,7 @@ if ($uri == $firstparam || $uri == $secondparam) {
         $prefix . $root . '/Refer'                        => './Public/Pages/MobileUI/referandearn.php',
         $prefix . $root . '/Setting'                        => './Public/Pages/MobileUI/portal_settings.php',
         $prefix . $root . '/Withdraw_Earning'                         => './Public/Pages/MobileUI/withdrawlearning.php',
+        $prefix . $root . '/See_Refer'                         => './Public/Pages/MobileUI/see_refer.php',
 
 
 
