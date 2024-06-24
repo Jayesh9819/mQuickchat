@@ -206,14 +206,24 @@
         include "./App/db/db_connect.php";
 
         $username = $_SESSION['username']; // Assuming username is stored in session
-        $query = "SELECT SUM(amount) as total_earnings FROM referrecord WHERE username = ?";
+        $query = "
+        SELECT 
+            SUM(CASE WHEN trans = 'Credit' THEN amount ELSE 0 END) as total_earnings,
+            SUM(CASE WHEN trans = 'Debit' THEN amount ELSE 0 END) as total_withdraw 
+        FROM 
+            referrecord 
+        WHERE 
+            username = ?
+    ";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
-        $totalEarnings = $row['total_earnings'] ?? 0; // If there's no earnings, default to 0
+        $totalEarnings = $row['total_earnings'] ?? 0; 
+        $total_withdraw = $row['total_withdraw'] ?? 0; // If there's no earnings, default to 0
+        // If there's no earnings, default to 0
         $queryWithdrawAmount = "SELECT * FROM refferal_bonus"; // Adjust this if your table or column name is different.
         $resultWithdrawAmount = $conn->query($queryWithdrawAmount);
         $rowWithdrawAmount = $resultWithdrawAmount->fetch_assoc();
@@ -245,6 +255,7 @@
                 $referrals[$referralUsername]['affiliates'][] = $affiliateRow['name'];
             }
         }
+        $totalEarnings=$totalEarnings-(float)$withdrawAmount;
         $_SESSION['totalEarnings'] = $totalEarnings; // Store total earnings in session
 
         ?>

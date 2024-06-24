@@ -48,14 +48,15 @@
             $errorMessage = 'Invalid withdrawal amount.';
         } else {
             // Prepare the insert statement
-            $query = "INSERT INTO referrecord (username, amount, type, cashtag) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO referrecord (username, amount, type, cashtag,trans) VALUES (?, ?, ?, ?,?)";
             $stmt = $conn->prepare($query);
 
             // This assumes 'type' is a column in your table. Adjust if your table structure is different.
             $type = 'Withdrawal';
+            $trans='Debit';
 
             if ($stmt) {
-                $stmt->bind_param("sdss", $username, $amount, $type, $cashtag);
+                $stmt->bind_param("sdsss", $username, $amount, $type, $cashtag,$trans);
 
                 if ($stmt->execute()) {
                     $successMessage = 'Withdrawal successful.';
@@ -76,6 +77,7 @@
         }
         $conn->close();
     }
+    $totalEarning=$_SESSION['totalEarnings'];
 
 
     ?>
@@ -120,7 +122,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="amount" class="form-label">Amount</label>
-                                        <input type="number" class="form-control" id="amount" name="amount" value="<?php echo htmlspecialchars($withdrawAmount); ?>" min="0" step="0.01" required>
+                                        <input type="number" class="form-control" id="amount" name="amount" value="<?php echo htmlspecialchars($withdrawAmount); ?>" min="0" step="0.01" readonly >
 
                                         <script>
                                             document.getElementById('amount').addEventListener('input', function() {
