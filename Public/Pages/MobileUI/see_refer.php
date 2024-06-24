@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    include("./Public/Pages/Common/header.php");
+    include("./Public/Pages/Common/head.php");
     include "./Public/Pages/Common/auth_user.php";
 
     // Function to echo the script for toastr
@@ -41,18 +41,17 @@
     <!-- loader END -->
 
     <!-- sidebar  -->
-    <?php
-    include("./Public/Pages/Common/sidebar.php");
+    <?php include("./Public/Pages/Common/loader.php"); ?>
 
-    ?>
-
-    <main class="main-content">
-        <?php
-        include("./Public/Pages/Common/main_content.php");
-        ?>
+    <!-- Header Area-->
+    <?php include("./Public/Pages/Common/header.php"); ?>
 
 
-        <div class="content-inner container-fluid pb-0" id="page_layout">
+    <!-- Sidenav Black Overlay-->
+    <?php include("./Public/Pages/Common/sidebar.php"); ?>
+
+
+    <div class="page-content-wrapper">
 
             <div class="row">
                 <div class="col-lg-12">
@@ -124,26 +123,8 @@
        
         ?>
 
-    </main>
-    <!-- Wrapper End-->
-    <!-- Live Customizer start -->
-    <!-- Setting offcanvas start here -->
     <?php
-    include("./Public/Pages/Common/theme_custom.php");
-
-    ?>
-
-    <!-- Settings sidebar end here -->
-
-    <?php
-    include("./Public/Pages/Common/settings_link.php");
-
-    ?>
-    <!-- Live Customizer end -->
-
-    <!-- Library Bundle Script -->
-    <?php
-    include("./Public/Pages/Common/scripts.php");
+    include("./Public/Pages/Common/script.php");
 
     ?>
 
