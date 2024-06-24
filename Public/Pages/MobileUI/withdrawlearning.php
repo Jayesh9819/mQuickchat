@@ -30,7 +30,7 @@
         echo '<p class="error">' . $_SESSION['login_error'] . '</p>';
         unset($_SESSION['login_error']); // Clear the error message
     }
-    require_once '../App/db/db_connect.php';
+    require_once './App/db/db_connect.php';
 
     // Initialize variables
     $username = $_SESSION['username'] ?? null;
