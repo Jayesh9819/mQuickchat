@@ -60,7 +60,7 @@
                 if ($stmt->execute()) {
                     $successMessage = 'Withdrawal successful.';
                     echo $successMessage;
-                    header("Location: ../../index.php/Refer_And_Earn");
+                    header("Location: ../../index.php/Refer");
 
                     // Reset amount in the session if needed or perform additional actions
                 } else {
