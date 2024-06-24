@@ -255,7 +255,7 @@
                 $referrals[$referralUsername]['affiliates'][] = $affiliateRow['name'];
             }
         }
-        $totalEarnings=$totalEarnings-(float)$withdrawAmount;
+        $totalEarnings=$totalEarnings-$withdrawAmount;
         $_SESSION['totalEarnings'] = $totalEarnings; // Store total earnings in session
 
         ?>
