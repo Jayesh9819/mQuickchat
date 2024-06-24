@@ -41,7 +41,7 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Retrieve and sanitize form data
         $amount = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $cashtag = filter_input(INPUT_POST, 'cashtag', FILTER_SANITIZE_STRING);
+        $cashtag = filter_input(INPUT_POST, 'cashtag');
 
         // Validation
         if ($amount <= 0 || $amount > $withdrawAmount) {
