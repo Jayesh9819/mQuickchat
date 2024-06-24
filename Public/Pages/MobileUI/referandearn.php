@@ -223,10 +223,7 @@
 
         $totalEarnings = $row['total_earnings'] ?? 0; 
         $total_withdraw = $row['total_withdraw'] ?? 0; // If there's no earnings, default to 0
-        echo 'Earning before: ', $totalEarnings, '<br>';
         $totalEarnings = $totalEarnings - $total_withdraw;
-        echo 'Earning after: ', $totalEarnings, '<br>';
-        echo 'Total Withdraw: ', $total_withdraw, '<br>';
 $queryWithdrawAmount = "SELECT * FROM refferal_bonus"; // Adjust this if your table or column name is different.
         $resultWithdrawAmount = $conn->query($queryWithdrawAmount);
         $rowWithdrawAmount = $resultWithdrawAmount->fetch_assoc();
@@ -258,13 +255,6 @@ $queryWithdrawAmount = "SELECT * FROM refferal_bonus"; // Adjust this if your ta
                 $referrals[$referralUsername]['affiliates'][] = $affiliateRow['name'];
             }
         }
-        echo 'Earning before',$totalEarnings;
-        $totalEarnings = $totalEarnings-$withdrawAmount;
-        echo $totalEarnings;
-        echo 'Total Withdraw',$total_withdraw;
-
-        $_SESSION['totalEarnings'] = $totalEarnings; // Store total earnings in session
-
         ?>
 
         <div class="referrals-list">
