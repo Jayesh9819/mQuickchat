@@ -48,7 +48,7 @@
             $errorMessage = 'Invalid withdrawal amount.';
         } else {
             // Prepare the insert statement
-            $query = "INSERT INTO referralrecord (username, amount, 'type', cashtag) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO referralrecord (username, amount, type, cashtag) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($query);
 
             // This assumes 'type' is a column in your table. Adjust if your table structure is different.
