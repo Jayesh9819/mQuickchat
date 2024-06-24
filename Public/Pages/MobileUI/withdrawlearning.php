@@ -78,7 +78,7 @@
 
 </head>
 
-<body class="  ">
+<body>
     <!-- loader Start -->
     <?php
     // include("./Public/Pages/Common/loader.php");
