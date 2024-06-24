@@ -256,6 +256,9 @@
             }
         }
         $totalEarnings=$totalEarnings-$withdrawAmount;
+        echo $totalEarnings;
+        echo 'Total Withdraw',$total_withdraw;
+
         $_SESSION['totalEarnings'] = $totalEarnings; // Store total earnings in session
 
         ?>
