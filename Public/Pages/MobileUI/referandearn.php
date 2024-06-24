@@ -255,6 +255,9 @@ $queryWithdrawAmount = "SELECT * FROM refferal_bonus"; // Adjust this if your ta
                 $referrals[$referralUsername]['affiliates'][] = $affiliateRow['name'];
             }
         }
+
+        $_SESSION['totalEarnings'] = $totalEarnings; // Store total earnings in session
+
         ?>
 
         <div class="referrals-list">
