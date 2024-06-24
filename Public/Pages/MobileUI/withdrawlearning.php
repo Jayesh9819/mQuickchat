@@ -87,10 +87,15 @@
     <!-- loader END -->
 
     <!-- sidebar  -->
-    <?php
-    include("./Public/Pages/Common/sidebar.php");
+    <?php include("./Public/Pages/Common/loader.php"); ?>
 
-    ?>
+    <!-- Header Area-->
+    <?php include("./Public/Pages/Common/header.php"); ?>
+
+
+    <!-- Sidenav Black Overlay-->
+    <?php include("./Public/Pages/Common/sidebar.php"); ?>
+
 
     <main class="main-content">
         <?php
