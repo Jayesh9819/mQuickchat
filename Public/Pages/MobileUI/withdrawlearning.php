@@ -2,7 +2,11 @@
 <html lang="en" dir="ltr">
 
 <head>
+    
     <?php
+        error_reporting(E_ALL);  // Turn on all error reporting
+        ini_set('display_errors', 1);  // Display errors to the browser
+    
     include("./Public/Pages/Common/head.php");
     include "./Public/Pages/Common/auth_user.php";
 
