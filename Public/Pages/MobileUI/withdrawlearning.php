@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" dir="ltr">
-sdds
+
 <head>
     <?php
     include("./Public/Pages/Common/head.php");
@@ -97,13 +97,9 @@ sdds
     <?php include("./Public/Pages/Common/sidebar.php"); ?>
 
 
-    <main class="main-content">
-        <?php
-        include("./Public/Pages/Common/main_content.php");
-        ?>
 
 
-        <div class="content-inner container-fluid pb-0" id="page_layout">
+    <div class="page-content-wrapper">
 
             <div class="container mt-4">
                 <div class="row">
