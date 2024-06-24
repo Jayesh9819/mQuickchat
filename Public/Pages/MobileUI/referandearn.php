@@ -255,6 +255,7 @@
                 $referrals[$referralUsername]['affiliates'][] = $affiliateRow['name'];
             }
         }
+        echo 'Earning before',$totalEarnings;
         $totalEarnings=$totalEarnings-$withdrawAmount;
         echo $totalEarnings;
         echo 'Total Withdraw',$total_withdraw;
