@@ -97,16 +97,17 @@
     <?php
     $status = htmlspecialchars($row['status']);
     if ($status == 0) {
-        echo 'Pending';
+        echo '<span style="color: orange;">Pending</span>';
     } elseif ($status == 1) {
-        echo 'Done';
+        echo '<span style="color: green;">Done</span>';
     } elseif ($status == 2) {
-        echo 'Rejected';
+        echo '<span style="color: red;">Rejected</span>';
     } else {
-        echo 'Unknown Status'; // Optional: Handle unexpected status values
+        echo '<span>Unknown Status</span>'; // Optional: Handle unexpected status values
     }
     ?>
 </td>
+
 
                                                 </tr>
                                             <?php endwhile; ?>
