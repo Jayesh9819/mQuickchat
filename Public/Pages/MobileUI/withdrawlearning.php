@@ -157,15 +157,12 @@
         
         ?>
 
-    </main>
     <!-- Wrapper End-->
     <!-- Live Customizer start -->
     <!-- Setting offcanvas start here -->
     <!-- Library Bundle Script -->
-    <?php
-    include("./Public/Pages/Common/script.php");
+    <?php include("./Public/Pages/Common/script.php"); ?>
 
-    ?>
 
 </body>
 
