@@ -93,6 +93,21 @@
                                                     <td><?= htmlspecialchars($row['amount']); ?></td>
                                                     <td><?= htmlspecialchars($row['type']); ?></td>
                                                     <td><?= htmlspecialchars($row['created_at']); ?></td>
+                                                    <td>
+    <?php
+    $status = htmlspecialchars($row['status']);
+    if ($status == 0) {
+        echo 'Pending';
+    } elseif ($status == 1) {
+        echo 'Done';
+    } elseif ($status == 2) {
+        echo 'Rejected';
+    } else {
+        echo 'Unknown Status'; // Optional: Handle unexpected status values
+    }
+    ?>
+</td>
+
                                                 </tr>
                                             <?php endwhile; ?>
                                         </tbody>
