@@ -211,7 +211,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive">
+                <!-- <div class="table-responsive">
                     <?php
                     if (empty($results)) {
                         echo "No records found";
@@ -281,7 +281,7 @@
                             </tbody>
                         </table>
                     <?php } ?>
-                </div>
+                </div> -->
 
             </div>
     </div>
