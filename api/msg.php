@@ -38,6 +38,11 @@ function sendFCMNotification($token, $title, $body) {
     $notification->setTitle($title);
     $notification->setBody($body);
 
+    // **Check for empty token**
+    if (empty($token)) {
+        return 'Missing device token';
+    }
+
     // Create the message
     $message = new Message();
     $message->setToken($token);
