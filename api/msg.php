@@ -45,12 +45,18 @@ function sendFCMNotification($token, $title, $body) {
         $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
         return json_encode($response, JSON_PRETTY_PRINT);
     } catch (Exception $e) {
-        // Decode the HTTP response to get more details
-        if ($e instanceof Google\Service\Exception) {
-            $error = json_decode($e->getMessage(), true);
-            return 'Error sending message: ' . $error['error']['message'] . "\nDetails:\n" . json_encode($error, JSON_PRETTY_PRINT);
+        // Log the raw exception message
+        $errorMessage = 'Error sending message: ' . $e->getMessage();
+        error_log($errorMessage);
+
+        // Decode the exception message if possible
+        $errorDetails = json_decode($e->getMessage(), true);
+
+        // Handle null case and ensure detailed error logging
+        if ($errorDetails && isset($errorDetails['error']['message'])) {
+            return 'Error sending message: ' . $errorDetails['error']['message'] . "\nDetails:\n" . json_encode($errorDetails, JSON_PRETTY_PRINT);
         } else {
-            return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
+            return $errorMessage . "\nRaw error message: " . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
         }
     }
 }
