@@ -4,7 +4,7 @@ include_once '../App/db/db_connect.php';
 
 // Get user_id and token from POST data
 $userId = $_POST['user_id'];
-$token = $_POST['token'];
+$token = $_POST['fcm_token'];
 
 // Check if the user ID exists in the table
 $sql = "SELECT user_id FROM user_tokens WHERE user_id = ?";
