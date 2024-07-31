@@ -2,8 +2,8 @@
 require '../vendor/autoload.php';
 
 use Google\Auth\CredentialsLoader;
-use GuzzleHttp\Client;
 use Google\Auth\HttpHandler\Guzzle6HttpHandler;
+use GuzzleHttp\Client;
 
 function getAccessToken() {
     $jsonKeyFilePath = './key.json'; // Path to your service account key file
@@ -13,13 +13,7 @@ function getAccessToken() {
         json_decode(file_get_contents($jsonKeyFilePath), true)
     );
 
-    $httpClient = new Client([
-        'timeout' => 10.0,
-        'verify' => false,
-    ]);
-
-    $httpHandler = new Guzzle6HttpHandler($httpClient);
-
+    $httpHandler = new Guzzle6HttpHandler(new Client());
     $token = $credentials->fetchAuthToken($httpHandler);
     if (isset($token['access_token'])) {
         return $token['access_token'];
@@ -28,45 +22,59 @@ function getAccessToken() {
     }
 }
 
-function sendFCMNotification($token, $title, $body) {
-    $accessToken = getAccessToken(); // Get OAuth 2.0 access token
-    $projectId = 'quickchatbiz-a6bc8'; // Replace with your Firebase project ID
+function sendFCMNotification($userId, $title, $body)
+{
+    // Include database configuration file
+    include '../App/db/db_connect.php';
 
-    $client = new Client();
-    $url = "https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send";
+    $sql = "SELECT fcm_token FROM user_tokens WHERE user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $stmt->bind_result($token);
+    $stmt->fetch();
+    $stmt->close();
 
-    $message = [
-        'message' => [
-            'token' => $token,
-            'notification' => [
-                'title' => $title,
-                'body' => $body
+    // Send notification if token exists
+    if ($token) {
+        $accessToken = getAccessToken(); // Get OAuth 2.0 access token
+        $projectId = 'YOUR_PROJECT_ID'; // Replace with your Firebase project ID
+
+        $client = new Client();
+        $url = "https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send";
+
+        $message = [
+            'message' => [
+                'token' => $token,
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body,
+                    'channel_id' => 'high_importance_channel',  // This should match the channel ID in Flutter
+                    'sound' => 'default'  // This is optional and mainly controlled by Flutter
+                ],
+                'priority' => 'high'
             ]
-        ]
-    ];
+        ];
 
-    try {
-        $response = $client->post($url, [
-            'headers' => [
-                'Authorization' => "Bearer {$accessToken}",
-                'Content-Type' => 'application/json',
-            ],
-            'body' => json_encode($message),
-        ]);
+        try {
+            $response = $client->post($url, [
+                'headers' => [
+                    'Authorization' => "Bearer {$accessToken}",
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode($message),
+            ]);
 
-        return $response->getBody()->getContents();
-    } catch (Exception $e) {
-        error_log('Error sending message: ' . $e->getMessage());
-        return 'Error sending message: ' . $e->getMessage();
+            return $response->getBody()->getContents();
+        } catch (Exception $e) {
+            error_log('Error sending message: ' . $e->getMessage());
+            return 'Error sending message: ' . $e->getMessage();
+        }
+    } else {
+        return "No token found.";
     }
 }
-// Fetch the token from your database
-$token = "dG5FnLz7QaeokWnN5j0T78:APA91bGs5GdCR1hHBZ-keEqdTzMuVubuTj6Y0kSOvJSoP8tVFwy3MHWDm8clalP4XbtXNaYEVR4rcn1yDzEbu0jqmSFG3viuFDd3POu5c7o55PjlnjcZeqDb3_2yKl9psh4Bc2_9v69R"; // Replace with the user token you fetched from the database
-$title = "Test Notification";
-$body = "This is a test notification";
 
-$response = sendFCMNotification($token, $title, $body);
-
-// Ensure some output to verify script execution
-echo "Script executed\n";
-echo "Response: $response\n";
+// Usage example
+echo sendFCMNotification(2, "hellooo", "Hiiiiiiiiii");
+?>
