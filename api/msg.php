@@ -52,14 +52,17 @@ function sendFCMNotification($token, $title, $body) {
         $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
         return json_encode($response, JSON_PRETTY_PRINT);
     } catch (GoogleServiceException $e) {
-        // Attempt to decode the response body for more details
-        $decodedErrors = json_decode($e->getMessage(), true);
-        if ($decodedErrors) {
-            return 'Error sending message: ' . $e->getMessage() . "\nDecoded Errors: " . json_encode($decodedErrors, JSON_PRETTY_PRINT);
-        }
+        // Log the raw error message and response
+        error_log('Error sending message: ' . $e->getMessage());
 
-        // Fallback to print raw message if decoding fails
-        return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
+        // Attempt to decode the response body for more details
+        $errorResponse = $e->getMessage();
+        $decodedErrors = json_decode($errorResponse, true);
+        if ($decodedErrors) {
+            return 'Error sending message: ' . json_encode($decodedErrors, JSON_PRETTY_PRINT);
+        } else {
+            return 'Error sending message: ' . $e->getMessage() . "\nRaw error response:\n" . $errorResponse . "\nStack trace:\n" . $e->getTraceAsString();
+        }
     } catch (Exception $e) {
         // Handle any other exceptions
         return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
