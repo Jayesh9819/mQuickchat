@@ -38,7 +38,7 @@ function sendFCMNotification($userId, $title, $body)
     // Send notification if token exists
     if ($token) {
         $accessToken = getAccessToken(); // Get OAuth 2.0 access token
-        $projectId = 'YOUR_PROJECT_ID'; // Replace with your Firebase project ID
+        $projectId = 'quickchatbiz-a6bc8'; // Replace with your Firebase project ID
 
         $client = new Client();
         $url = "https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send";
