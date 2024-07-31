@@ -491,13 +491,7 @@
 										<small style="display: block; color: #666; font-size: smaller;">By <?= htmlspecialchars($chat['sender_username']) ?></small>
 									<?php endif; ?>
 								</div>
-								<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
-    <div id="filePreviewWrapper" style="position: relative;">
-        <img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;">
-        <video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;"></video>
-        <a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
-        <button id="removeFilePreview" style="position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
-    </div>
+								
 
 							</div>
 						<?php endforeach;
@@ -507,6 +501,13 @@
 							No messages yet.
 						</div>
 					<?php endif; ?>
+					<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
+    <div id="filePreviewWrapper" style="position: relative;">
+        <img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;">
+        <video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;"></video>
+        <a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
+        <button id="removeFilePreview" style="position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
+    </div>
 				</div>
 
 			</div>
