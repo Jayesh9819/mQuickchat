@@ -1,12 +1,13 @@
 <?php
 // Include database configuration file
 include_once '../App/db/db_connect.php';
+print_r($_GET);
+// Get the user_id and fcm_token from the query parameters
+$userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+$token = isset($_GET['fcm_token']) ? $_GET['fcm_token'] : null;
 
-// Check if the required POST parameters are set
-if (isset($_POST['user_id']) && isset($_POST['fcm_token'])) {
-    $userId = $_POST['user_id'];
-    $token = $_POST['fcm_token'];
-
+// Check if the required parameters are provided
+if ($userId && $token) {
     // Check if the user ID exists in the table
     $sql = "SELECT user_id FROM user_tokens WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
