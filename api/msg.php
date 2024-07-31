@@ -26,6 +26,7 @@ function getAccessToken() {
 function sendFCMNotification($userId, $title, $body) {
     // Include database logic if not using a separate file
     // $conn = connectToDatabase(); // Replace with your connection logic
+    include '../App/db/db_connect.php';
 
     $sql = "SELECT fcm_token FROM user_tokens WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
