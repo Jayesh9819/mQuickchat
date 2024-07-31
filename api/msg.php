@@ -45,8 +45,8 @@ function sendFCMNotification($token, $title, $body) {
         $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
         return json_encode($response, JSON_PRETTY_PRINT);
     } catch (Exception $e) {
-        // Return detailed error message
-        return 'Error sending message: ' . $e->getMessage();
+        // Return detailed error message and stack trace
+        return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
     }
 }
 
