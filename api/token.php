@@ -1,8 +1,7 @@
 <?php
 // Include database configuration file
 include_once '../App/db/db_connect.php';
-
-// Get user_id and token from POST data
+print_r($_POST);
 $userId = $_POST['user_id'];
 $token = $_POST['fcm_token'];
 
