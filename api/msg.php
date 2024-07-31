@@ -45,6 +45,6 @@ $body = "This is a test notification";
 $response = sendFCMNotification($token, $title, $body);
 
 // Ensure some output to verify script execution
-echo "Script executed\n";
+echo "Script executed \n";
 echo "Response: $response\n";
 ?>
