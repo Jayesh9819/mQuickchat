@@ -480,7 +480,11 @@
 				</div>
 
 			</div>
-
+			<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
+					<img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none;">
+					<video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none;"></video>
+					<a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
+				</div>
 			<div id="replyIndicator" style="display: none; background-color: #f0f0f0; padding: 5px; border-radius: 5px; margin-bottom: 5px;">
 				<button onclick="clearReply()" style="float: right;">&times;</button>
 			</div>
@@ -490,11 +494,7 @@
 					<img src="../uploads/pin.png" alt="Attachment" style="width: 20px; height: 20px;">
 				</button>
 				<input type="file" id="fileInput" style="display: none;">
-				<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
-					<img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none;">
-					<video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none;"></video>
-					<a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
-				</div>
+				
 				<button class="btn btn-outline-secondary emoji-picker-button" type="button" style="flex: 0 0 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 5px; background-color: white;">😊</button>
 				<textarea id="message" class="form-control" style="flex-grow: 1; height: 100%; resize: none; padding: 8px; border-radius: 25px; margin-right: 5px; background-color: white; border: 1px solid #ced4da;" rows="1"></textarea>
 				<button class="btn btn-primary" id="sendBtn" style="border: none; background: none; padding: 0; outline: none; margin-left: 10px; position:relative;top:2px ;flex: 0 0 40px; height: 40px;  display: flex; align-items: center; justify-content: center;">
