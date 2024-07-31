@@ -38,5 +38,6 @@ $title = "Test Notification";
 $body = "This is a test notification";
 
 $response = sendFCMNotification($token, $title, $body);
+echo "Executed";
 echo $response;
 ?>
