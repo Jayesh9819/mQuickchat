@@ -80,29 +80,32 @@
 		.w-10 {
 			width: 10%;
 		}
+
 		#sendBtn {
-    display: none; /* Hide send button initially */
-}
+			display: none;
+			/* Hide send button initially */
+		}
 
-#filePreviewContainer {
-    display: none; /* Hide preview container initially */
-}
+		#filePreviewContainer {
+			display: none;
+			/* Hide preview container initially */
+		}
 
-#removeFilePreview {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
+		#removeFilePreview {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			background: rgba(0, 0, 0, 0.5);
+			color: white;
+			border: none;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+		}
 
 
 		.fs-big {
@@ -491,7 +494,7 @@
 										<small style="display: block; color: #666; font-size: smaller;">By <?= htmlspecialchars($chat['sender_username']) ?></small>
 									<?php endif; ?>
 								</div>
-								
+
 
 							</div>
 						<?php endforeach;
@@ -501,17 +504,19 @@
 							No messages yet.
 						</div>
 					<?php endif; ?>
-					<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
-    <div id="filePreviewWrapper" style="position: relative;">
-        <img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;">
-        <video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;"></video>
-        <a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
-        <button id="removeFilePreview" style="position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
-    </div>
+
 				</div>
 
 			</div>
-			
+			<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
+				<div id="filePreviewWrapper" style="position: relative;">
+					<img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;">
+					<video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;"></video>
+					<a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
+					<button id="removeFilePreview" style="position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
+				</div>
+			</div>
+
 			<div id="replyIndicator" style="display: none; background-color: #f0f0f0; padding: 5px; border-radius: 5px; margin-bottom: 5px;">
 				<button onclick="clearReply()" style="float: right;">&times;</button>
 			</div>
@@ -521,7 +526,7 @@
 					<img src="../uploads/pin.png" alt="Attachment" style="width: 20px; height: 20px;">
 				</button>
 				<input type="file" id="fileInput" style="display: none;">
-				
+
 				<button class="btn btn-outline-secondary emoji-picker-button" type="button" style="flex: 0 0 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 5px; background-color: white;">😊</button>
 				<textarea id="message" class="form-control" style="flex-grow: 1; height: 100%; resize: none; padding: 8px; border-radius: 25px; margin-right: 5px; background-color: white; border: 1px solid #ced4da;" rows="1"></textarea>
 				<button class="btn btn-primary" id="sendBtn" style="border: none; background: none; padding: 0; outline: none; margin-left: 10px; position:relative;top:2px ;flex: 0 0 40px; height: 40px;  display: flex; align-items: center; justify-content: center;">
@@ -531,7 +536,6 @@
 			</div>
 
 			
-</div>
 
 			<div id="emojiPicker" class="emoji-picker" style="display: none;"></div>
 			<audio id="chatNotificationSound" src="../uploads/notification.wav" preload="auto"></audio>
@@ -613,95 +617,95 @@
 		}
 
 		document.getElementById('fileInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        previewFile(file);
-        document.getElementById('sendBtn').style.display = 'block'; // Show send button
-    }
-});
+			const file = event.target.files[0];
+			if (file) {
+				previewFile(file);
+				document.getElementById('sendBtn').style.display = 'block'; // Show send button
+			}
+		});
 
-function previewFile(file) {
-    const filePreviewContainer = document.getElementById('filePreviewContainer');
-    const filePreviewWrapper = document.getElementById('filePreviewWrapper');
-    const filePreview = document.getElementById('filePreview');
-    const videoPreview = document.getElementById('videoPreview');
-    const fileDownload = document.getElementById('fileDownload');
+		function previewFile(file) {
+			const filePreviewContainer = document.getElementById('filePreviewContainer');
+			const filePreviewWrapper = document.getElementById('filePreviewWrapper');
+			const filePreview = document.getElementById('filePreview');
+			const videoPreview = document.getElementById('videoPreview');
+			const fileDownload = document.getElementById('fileDownload');
 
-    filePreviewContainer.style.display = 'block';
-    filePreview.style.display = 'none';
-    videoPreview.style.display = 'none';
-    fileDownload.style.display = 'none';
+			filePreviewContainer.style.display = 'block';
+			filePreview.style.display = 'none';
+			videoPreview.style.display = 'none';
+			fileDownload.style.display = 'none';
 
-    const fileUrl = URL.createObjectURL(file);
+			const fileUrl = URL.createObjectURL(file);
 
-    if (file.type.startsWith('image/')) {
-        filePreview.src = fileUrl;
-        filePreview.style.display = 'block';
-    } else if (file.type.startsWith('video/')) {
-        videoPreview.src = fileUrl;
-        videoPreview.style.display = 'block';
-    } else {
-        fileDownload.href = fileUrl;
-        fileDownload.textContent = file.name;
-        fileDownload.style.display = 'block';
-    }
+			if (file.type.startsWith('image/')) {
+				filePreview.src = fileUrl;
+				filePreview.style.display = 'block';
+			} else if (file.type.startsWith('video/')) {
+				videoPreview.src = fileUrl;
+				videoPreview.style.display = 'block';
+			} else {
+				fileDownload.href = fileUrl;
+				fileDownload.textContent = file.name;
+				fileDownload.style.display = 'block';
+			}
 
-    document.getElementById('removeFilePreview').addEventListener('click', function() {
-        filePreviewContainer.style.display = 'none';
-        fileInput.value = '';
-        document.getElementById('sendBtn').style.display = 'none';
-    });
-}
+			document.getElementById('removeFilePreview').addEventListener('click', function() {
+				filePreviewContainer.style.display = 'none';
+				fileInput.value = '';
+				document.getElementById('sendBtn').style.display = 'none';
+			});
+		}
 
-document.getElementById('sendBtn').addEventListener('click', function() {
-    sendMessage();
-});
+		document.getElementById('sendBtn').addEventListener('click', function() {
+			sendMessage();
+		});
 
-function sendMessage() {
-    const message = document.getElementById('message').value.trim();
-    const fileInput = document.getElementById('fileInput');
-    if (message === '' && fileInput.files.length === 0) {
-        return; // Exit if message is empty and no file is selected
-    }
+		function sendMessage() {
+			const message = document.getElementById('message').value.trim();
+			const fileInput = document.getElementById('fileInput');
+			if (message === '' && fileInput.files.length === 0) {
+				return; // Exit if message is empty and no file is selected
+			}
 
-    const formData = new FormData();
-    formData.append('message', message);
-    if (fileInput.files.length > 0) {
-        formData.append('attachment', fileInput.files[0]);
-    }
+			const formData = new FormData();
+			formData.append('message', message);
+			if (fileInput.files.length > 0) {
+				formData.append('attachment', fileInput.files[0]);
+			}
 
-    formData.append('to_id', <?= json_encode($chatWith['id']) ?>);
+			formData.append('to_id', <?= json_encode($chatWith['id']) ?>);
 
-    if (replyToId !== null) {
-        formData.append('reply_to_id', replyToId);
-    }
+			if (replyToId !== null) {
+				formData.append('reply_to_id', replyToId);
+			}
 
-    $.ajax({
-        url: "../Public/Pages/Chat/app/ajax/insert.php",
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            const data = JSON.parse(response);
-            if (data.status === "success") {
-                document.getElementById('message').value = "";
-                document.getElementById('fileInput').value = "";
-                replyToId = null;
-                clearReply(); // Reset reply reference
-                $("#chatBox").append(data.html);
-                scrollDown();
-                document.getElementById('filePreviewContainer').style.display = 'none'; // Hide preview after sending
-                document.getElementById('sendBtn').style.display = 'none'; // Hide send button after sending
-            } else {
-                console.error("Error in response:", data.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error sending message:", xhr.responseText);
-        }
-    });
-}
+			$.ajax({
+				url: "../Public/Pages/Chat/app/ajax/insert.php",
+				type: "POST",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+					const data = JSON.parse(response);
+					if (data.status === "success") {
+						document.getElementById('message').value = "";
+						document.getElementById('fileInput').value = "";
+						replyToId = null;
+						clearReply(); // Reset reply reference
+						$("#chatBox").append(data.html);
+						scrollDown();
+						document.getElementById('filePreviewContainer').style.display = 'none'; // Hide preview after sending
+						document.getElementById('sendBtn').style.display = 'none'; // Hide send button after sending
+					} else {
+						console.error("Error in response:", data.message);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error("Error sending message:", xhr.responseText);
+				}
+			});
+		}
 
 		function onNewMessageReceived() {
 			var chatSound = document.getElementById('chatNotificationSound');
