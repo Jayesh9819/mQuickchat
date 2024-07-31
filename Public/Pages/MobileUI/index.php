@@ -39,22 +39,23 @@ session_start();
     ?>
 </head>
 
-<body onload="sendSessionDataToFlutter();">
+<<body onload="sendSessionDataToFlutter();">
 <script type="text/javascript">
         // Embed the user ID in a JavaScript variable
         var userId = "<?php echo $_SESSION['userid']; ?>"; 
 
-        // Function to send the user ID to the SwiftUI app
+        // Function to send the user ID to the Flutter app
         function sendUserIdToApp() {
-            if (window.webkit && window.webkit.messageHandlers.getUserId) {
-                window.webkit.messageHandlers.getUserId.postMessage(userId);
+            if (window.Flutter) {
+                window.Flutter.postMessage(userId);
+            } else if (window.parent && window.parent.postMessage) {
+                window.parent.postMessage(userId, '*');
             }
         }
 
         // Call the function to send the user ID
         sendUserIdToApp();
     </script>
-
 
     <?php //include("./Public/Pages/Common/loader.php"); 
     ?>
@@ -169,13 +170,13 @@ session_start();
         function sendSessionDataToFlutter() {
             var userId = "<?php echo $_SESSION['userid']; ?>"; 
             if (window.Flutter) {
-                Flutter.postMessage(userId);
+                window.Flutter.postMessage(userId);
             }
         }
         function sendUserIdToApp() {
             if (window.webkit && window.webkit.messageHandlers.getUserId) {
                 window.webkit.messageHandlers.getUserId.postMessage(userId);
-                console.log("Sende to App");
+                console.log("Sent to App");
             }
         }
 
@@ -184,6 +185,6 @@ session_start();
     </script>
     <?php include("./Public/Pages/Common/script.php"); ?>
 
-</body>
+    </body>
 
 </html>
