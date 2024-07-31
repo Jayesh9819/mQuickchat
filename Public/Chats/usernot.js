@@ -1,6 +1,11 @@
 function checkForNewMessages() {
     fetch('../Public/Chats/newmsg.php')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.newMessages) {
                 console.log(data.newMessages);
@@ -12,7 +17,12 @@ function checkForNewMessages() {
                 });
             }
         })
-        .catch(error => console.error('Error fetching new messages:', error));
+        .catch(error => {
+            console.error('Error fetching new messages:', error);
+        });
 }
 
-setInterval(checkForNewMessages, 100);
+setInterval(checkForNewMessages, 500); // Set to 5000ms (5 seconds) for better performance
+
+// Call the function immediately to check for messages on page load
+checkForNewMessages();
