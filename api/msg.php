@@ -46,9 +46,9 @@ function sendFCMNotification($token, $title, $body) {
         $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
         return json_encode($response, JSON_PRETTY_PRINT);
     } catch (GoogleServiceException $e) {
-        // Get detailed error information
-        $errors = $e->getErrors();
-        return 'Error sending message: ' . $e->getMessage() . "\nErrors: " . json_encode($errors, JSON_PRETTY_PRINT) . "\nStack trace:\n" . $e->getTraceAsString();
+        // Access the raw HTTP response
+        $errorResponse = $e->getMessage();
+        return 'Error sending message: ' . $e->getMessage() . "\nHTTP Response:\n" . $errorResponse . "\nStack trace:\n" . $e->getTraceAsString();
     } catch (Exception $e) {
         // Handle any other exceptions
         return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
