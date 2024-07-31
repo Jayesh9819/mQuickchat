@@ -76,5 +76,5 @@ function sendFCMNotification($userId, $title, $body)
 }
 
 // Usage example
-echo sendFCMNotification(2, "hellooo", "Hiiiiiiiiii");
+echo sendFCMNotification(34, "hellooo", "Hiiiiiiiiii");
 ?>
