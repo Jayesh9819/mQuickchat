@@ -4,56 +4,57 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script> <?php
-																																							ob_start();
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<?php
+	ob_start();
 
-																																							include("./Public/Pages/Common/head.php");
-																																							include "./Public/Pages/Common/auth_user.php";
-																																							function echoToastScript($type, $message)
-																																							{
-																																								echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
-																																							}
+	include("./Public/Pages/Common/head.php");
+	include "./Public/Pages/Common/auth_user.php";
+	function echoToastScript($type, $message)
+	{
+		echo "<script type='text/javascript'>document.addEventListener('DOMContentLoaded', function() { toastr['$type']('$message'); });</script>";
+	}
 
 
-																																							if (isset($_SESSION['toast'])) {
-																																								$toast = $_SESSION['toast'];
-																																								echoToastScript($toast['type'], $toast['message']);
-																																								unset($_SESSION['toast']); // Clear the toast message from session
-																																							}
+	if (isset($_SESSION['toast'])) {
+		$toast = $_SESSION['toast'];
+		echoToastScript($toast['type'], $toast['message']);
+		unset($_SESSION['toast']); // Clear the toast message from session
+	}
 
-																																							if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+	if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-																																							// Display error message if available
-																																							if (isset($_SESSION['login_error'])) {
-																																								echo '<p class="error">' . $_SESSION['login_error'] . '</p>';
-																																								unset($_SESSION['login_error']); // Clear the error message
-																																							}
-																																							if (isset($_SESSION['username'])) {
-																																								# database connection file
-																																								include 'app/db.conn.php';
+	// Display error message if available
+	if (isset($_SESSION['login_error'])) {
+		echo '<p class="error">' . $_SESSION['login_error'] . '</p>';
+		unset($_SESSION['login_error']); // Clear the error message
+	}
+	if (isset($_SESSION['username'])) {
+		# database connection file
+		include 'app/db.conn.php';
 
-																																								include 'app/helpers/user.php';
-																																								include 'app/helpers/chat.php';
-																																								include 'app/helpers/opened.php';
+		include 'app/helpers/user.php';
+		include 'app/helpers/chat.php';
+		include 'app/helpers/opened.php';
 
-																																								include 'app/helpers/timeAgo.php';
+		include 'app/helpers/timeAgo.php';
 
-																																								if (!isset($_GET['user'])) {
-																																									header("Location: ./Chat_l");
-																																									exit;
-																																								}
+		if (!isset($_GET['user'])) {
+			header("Location: ./Chat_l");
+			exit;
+		}
 
-																																								# Getting User data data
-																																								$chatWith = getUser($_GET['user'], $conn);
-																																								if (empty($chatWith)) {
-																																									header("Location: ./Chat_l");
-																																									exit;
-																																								}
+		# Getting User data data
+		$chatWith = getUser($_GET['user'], $conn);
+		if (empty($chatWith)) {
+			header("Location: ./Chat_l");
+			exit;
+		}
 
-																																								$chats = getChats($_SESSION['user_id'], $chatWith['id'], $conn);
-																																								opened($chatWith['id'], $conn, $chats);
-																																							}
-																																							?>
+		$chats = getChats($_SESSION['user_id'], $chatWith['id'], $conn);
+		opened($chatWith['id'], $conn, $chats);
+	}
+	?>
 
 	<style>
 		.chat-header {
@@ -497,6 +498,12 @@
 					<img src="../uploads/Qbutton.png" style="width: 50px; height: 50px;" alt="">
 				</button>
 			</div>
+			<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
+				<img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none;">
+				<video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none;"></video>
+				<a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
+			</div>
+
 			<div id="emojiPicker" class="emoji-picker" style="display: none;"></div>
 			<audio id="chatNotificationSound" src="../uploads/notification.wav" preload="auto"></audio>
 
@@ -576,6 +583,87 @@
 			}
 		}
 
+		document.getElementById('fileInput').addEventListener('change', function(event) {
+			const file = event.target.files[0];
+			if (file) {
+				previewFile(file);
+				document.getElementById('sendBtn').style.display = 'block'; // Show send button
+			}
+		});
+
+		function previewFile(file) {
+			const filePreviewContainer = document.getElementById('filePreviewContainer');
+			const filePreview = document.getElementById('filePreview');
+			const videoPreview = document.getElementById('videoPreview');
+			const fileDownload = document.getElementById('fileDownload');
+
+			filePreviewContainer.style.display = 'block';
+			filePreview.style.display = 'none';
+			videoPreview.style.display = 'none';
+			fileDownload.style.display = 'none';
+
+			const fileUrl = URL.createObjectURL(file);
+
+			if (file.type.startsWith('image/')) {
+				filePreview.src = fileUrl;
+				filePreview.style.display = 'block';
+			} else if (file.type.startsWith('video/')) {
+				videoPreview.src = fileUrl;
+				videoPreview.style.display = 'block';
+			} else {
+				fileDownload.href = fileUrl;
+				fileDownload.textContent = file.name;
+				fileDownload.style.display = 'block';
+			}
+		}
+
+		document.getElementById('sendBtn').addEventListener('click', function() {
+			sendMessage();
+		});
+
+		function sendMessage() {
+			const message = document.getElementById('message').value.trim();
+			const fileInput = document.getElementById('fileInput');
+			if (message === '' && fileInput.files.length === 0) {
+				return; // Exit if message is empty and no file is selected
+			}
+
+			const formData = new FormData();
+			formData.append('message', message);
+			if (fileInput.files.length > 0) {
+				formData.append('attachment', fileInput.files[0]);
+			}
+
+			formData.append('to_id', <?= json_encode($chatWith['id']) ?>);
+
+			if (replyToId !== null) {
+				formData.append('reply_to_id', replyToId);
+			}
+
+			$.ajax({
+				url: "../Public/Pages/Chat/app/ajax/insert.php",
+				type: "POST",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+					const data = JSON.parse(response);
+					if (data.status === "success") {
+						document.getElementById('message').value = "";
+						document.getElementById('fileInput').value = "";
+						replyToId = null;
+						clearReply(); // Reset reply reference
+						$("#chatBox").append(data.html);
+						scrollDown();
+					} else {
+						console.error("Error in response:", data.message);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error("Error sending message:", xhr.responseText);
+				}
+			});
+		}
 
 		function onNewMessageReceived() {
 			var chatSound = document.getElementById('chatNotificationSound');
