@@ -4,6 +4,7 @@ require '../vendor/autoload.php';
 use Google\Auth\CredentialsLoader;
 use Google\Auth\HttpHandler\Guzzle6HttpHandler;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 function getAccessToken() {
     $jsonKeyFilePath = './key.json'; // Path to your service account key file
@@ -22,18 +23,26 @@ function getAccessToken() {
     }
 }
 
-function sendFCMNotification($userId, $title, $body)
-{
+function sendFCMNotification($userId, $title, $body) {
     // Include database configuration file
     include '../App/db/db_connect.php';
 
     $sql = "SELECT fcm_token FROM user_tokens WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        return "Failed to prepare SQL statement.";
+    }
+
     $stmt->bind_param("i", $userId);
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return "Failed to execute SQL statement.";
+    }
+
     $stmt->bind_result($token);
     $stmt->fetch();
     $stmt->close();
+    $conn->close(); // Close the database connection
 
     // Send notification if token exists
     if ($token) {
@@ -48,7 +57,8 @@ function sendFCMNotification($userId, $title, $body)
                 'token' => $token,
                 'notification' => [
                     'title' => $title,
-                    'body' => $body
+                    'body' => $body,
+                    'sound' => 'default', // Optional: add sound
                 ],
             ]
         ];
@@ -63,6 +73,10 @@ function sendFCMNotification($userId, $title, $body)
             ]);
 
             return $response->getBody()->getContents();
+        } catch (RequestException $e) {
+            $responseBody = $e->hasResponse() ? (string) $e->getResponse()->getBody() : 'No response body available';
+            error_log('Error sending message: ' . $e->getMessage() . "\nResponse body: $responseBody");
+            return 'Error sending message: ' . $e->getMessage();
         } catch (Exception $e) {
             error_log('Error sending message: ' . $e->getMessage());
             return 'Error sending message: ' . $e->getMessage();
