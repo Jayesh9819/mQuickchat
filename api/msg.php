@@ -19,30 +19,31 @@ function getAccessToken() {
     if (isset($token['access_token'])) {
         return $token['access_token'];
     } else {
-        throw new Exception('Failed to get access token');
+        throw new Exception('Failed to get access token: ' . (isset($token['error']) ? $token['error'] : 'Unknown error'));
     }
 }
 
 function sendFCMNotification($userId, $title, $body) {
-    // Include database configuration file
-    include '../App/db/db_connect.php';
+    // Include database logic if not using a separate file
+    // $conn = connectToDatabase(); // Replace with your connection logic
 
     $sql = "SELECT fcm_token FROM user_tokens WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
-        return "Failed to prepare SQL statement.";
+        return "Failed to prepare SQL statement: " . $conn->error;
     }
 
     $stmt->bind_param("i", $userId);
     if (!$stmt->execute()) {
         $stmt->close();
-        return "Failed to execute SQL statement.";
+        return "Failed to execute SQL statement: " . $conn->error;
     }
 
     $stmt->bind_result($token);
     $stmt->fetch();
     $stmt->close();
-    $conn->close(); // Close the database connection
+    // Close the database connection (if using a separate file)
+    // $conn->close();
 
     // Send notification if token exists
     if ($token) {
@@ -71,14 +72,22 @@ function sendFCMNotification($userId, $title, $body) {
                 'body' => json_encode($message),
             ]);
 
-            return $response->getBody()->getContents();
+            // Check for successful response status code
+            if ($response->getStatusCode() === 200) {
+                return $response->getBody()->getContents();
+            } else {
+                $responseBody = (string) $response->getBody();
+                error_log("Error sending message: Status code " . $response->getStatusCode() . "\nResponse body: $responseBody");
+                return "Error sending message: Status code " . $response->getStatusCode();
+            }
         } catch (RequestException $e) {
             $responseBody = $e->hasResponse() ? (string) $e->getResponse()->getBody() : 'No response body available';
             error_log('Error sending message: ' . $e->getMessage() . "\nResponse body: $responseBody");
             return 'Error sending message: ' . $e->getMessage();
         } catch (Exception $e) {
             error_log('Error sending message: ' . $e->getMessage());
-            return 'Error sending message: ' . $e->getMessage();
+            return 'Error sending message: Internal server error'. $e->getMessage(); // Consider a more specific error message
+
         }
     } else {
         return "No token found.";
