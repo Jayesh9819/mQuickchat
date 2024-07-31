@@ -75,7 +75,7 @@ function sendFCMNotification($userId, $title, $body) {
         } catch (RequestException $e) {
             $responseBody = $e->hasResponse() ? (string) $e->getResponse()->getBody() : 'No response body available';
             error_log('Error sending message: ' . $e->getMessage() . "\nResponse body: $responseBody");
-            return 'Error sending message: ' . $e->getMessage();
+            return 'Error sending message: ' . $e->getMessage(). "\nResponse body: $responseBody";
         } catch (Exception $e) {
             error_log('Error sending message: ' . $e->getMessage());
             return 'Error sending messagehjbhj: ' . $e->getMessage();
