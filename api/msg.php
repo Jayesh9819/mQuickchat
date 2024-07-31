@@ -6,6 +6,7 @@ use Google\Service\FirebaseCloudMessaging;
 use Google\Service\FirebaseCloudMessaging\Message;
 use Google\Service\FirebaseCloudMessaging\Notification;
 use Google\Service\FirebaseCloudMessaging\SendMessageRequest;
+use Google\Service\Exception as GoogleServiceException;
 
 function sendFCMNotification($token, $title, $body) {
     // Path to your service account key file
@@ -44,15 +45,13 @@ function sendFCMNotification($token, $title, $body) {
     try {
         $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
         return json_encode($response, JSON_PRETTY_PRINT);
+    } catch (GoogleServiceException $e) {
+        // Get detailed error information
+        $errors = $e->getErrors();
+        return 'Error sending message: ' . $e->getMessage() . "\nErrors: " . json_encode($errors, JSON_PRETTY_PRINT) . "\nStack trace:\n" . $e->getTraceAsString();
     } catch (Exception $e) {
-        // Decode the HTTP response to get more details
-        $response = $e->getResponse();
-        if ($response) {
-            $body = (string) $response->getBody();
-            return 'Error sending message: ' . $e->getMessage() . "\nHTTP Response Body:\n" . $body;
-        } else {
-            return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
-        }
+        // Handle any other exceptions
+        return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
     }
 }
 
