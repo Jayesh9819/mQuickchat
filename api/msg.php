@@ -50,7 +50,6 @@ function sendFCMNotification($userId, $title, $body)
                     'title' => $title,
                     'body' => $body
                 ],
-                'priority' => 'high'
             ]
         ];
 
