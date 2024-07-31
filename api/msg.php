@@ -57,8 +57,7 @@ function sendFCMNotification($userId, $title, $body) {
                 'token' => $token,
                 'notification' => [
                     'title' => $title,
-                    'body' => $body,
-                    'sound' => 'default', // Optional: add sound
+                    'body' => $body
                 ],
             ]
         ];
