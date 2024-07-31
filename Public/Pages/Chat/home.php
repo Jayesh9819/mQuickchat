@@ -480,11 +480,7 @@
 				</div>
 
 			</div>
-			<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
-					<img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none;">
-					<video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none;"></video>
-					<a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
-				</div>
+			
 			<div id="replyIndicator" style="display: none; background-color: #f0f0f0; padding: 5px; border-radius: 5px; margin-bottom: 5px;">
 				<button onclick="clearReply()" style="float: right;">&times;</button>
 			</div>
@@ -503,6 +499,14 @@
 				</button>
 			</div>
 
+			<div id="filePreviewContainer" style="display: none; margin-top: 10px;">
+    <div id="filePreviewWrapper" style="position: relative;">
+        <img id="filePreview" src="" alt="File Preview" style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;">
+        <video id="videoPreview" controls style="max-width: 100%; max-height: 200px; display: none; border-radius: 10px;"></video>
+        <a id="fileDownload" href="" target="_blank" style="display: none;">Download File</a>
+        <button id="removeFilePreview" style="position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
+    </div>
+</div>
 
 			<div id="emojiPicker" class="emoji-picker" style="display: none;"></div>
 			<audio id="chatNotificationSound" src="../uploads/notification.wav" preload="auto"></audio>
@@ -584,86 +588,95 @@
 		}
 
 		document.getElementById('fileInput').addEventListener('change', function(event) {
-			const file = event.target.files[0];
-			if (file) {
-				previewFile(file);
-				document.getElementById('sendBtn').style.display = 'block'; // Show send button
-			}
-		});
+    const file = event.target.files[0];
+    if (file) {
+        previewFile(file);
+        document.getElementById('sendBtn').style.display = 'block'; // Show send button
+    }
+});
 
-		function previewFile(file) {
-			const filePreviewContainer = document.getElementById('filePreviewContainer');
-			const filePreview = document.getElementById('filePreview');
-			const videoPreview = document.getElementById('videoPreview');
-			const fileDownload = document.getElementById('fileDownload');
+function previewFile(file) {
+    const filePreviewContainer = document.getElementById('filePreviewContainer');
+    const filePreviewWrapper = document.getElementById('filePreviewWrapper');
+    const filePreview = document.getElementById('filePreview');
+    const videoPreview = document.getElementById('videoPreview');
+    const fileDownload = document.getElementById('fileDownload');
 
-			filePreviewContainer.style.display = 'block';
-			filePreview.style.display = 'none';
-			videoPreview.style.display = 'none';
-			fileDownload.style.display = 'none';
+    filePreviewContainer.style.display = 'block';
+    filePreview.style.display = 'none';
+    videoPreview.style.display = 'none';
+    fileDownload.style.display = 'none';
 
-			const fileUrl = URL.createObjectURL(file);
+    const fileUrl = URL.createObjectURL(file);
 
-			if (file.type.startsWith('image/')) {
-				filePreview.src = fileUrl;
-				filePreview.style.display = 'block';
-			} else if (file.type.startsWith('video/')) {
-				videoPreview.src = fileUrl;
-				videoPreview.style.display = 'block';
-			} else {
-				fileDownload.href = fileUrl;
-				fileDownload.textContent = file.name;
-				fileDownload.style.display = 'block';
-			}
-		}
+    if (file.type.startsWith('image/')) {
+        filePreview.src = fileUrl;
+        filePreview.style.display = 'block';
+    } else if (file.type.startsWith('video/')) {
+        videoPreview.src = fileUrl;
+        videoPreview.style.display = 'block';
+    } else {
+        fileDownload.href = fileUrl;
+        fileDownload.textContent = file.name;
+        fileDownload.style.display = 'block';
+    }
 
-		document.getElementById('sendBtn').addEventListener('click', function() {
-			sendMessage();
-		});
+    document.getElementById('removeFilePreview').addEventListener('click', function() {
+        filePreviewContainer.style.display = 'none';
+        fileInput.value = '';
+        document.getElementById('sendBtn').style.display = 'none';
+    });
+}
 
-		function sendMessage() {
-			const message = document.getElementById('message').value.trim();
-			const fileInput = document.getElementById('fileInput');
-			if (message === '' && fileInput.files.length === 0) {
-				return; // Exit if message is empty and no file is selected
-			}
+document.getElementById('sendBtn').addEventListener('click', function() {
+    sendMessage();
+});
 
-			const formData = new FormData();
-			formData.append('message', message);
-			if (fileInput.files.length > 0) {
-				formData.append('attachment', fileInput.files[0]);
-			}
+function sendMessage() {
+    const message = document.getElementById('message').value.trim();
+    const fileInput = document.getElementById('fileInput');
+    if (message === '' && fileInput.files.length === 0) {
+        return; // Exit if message is empty and no file is selected
+    }
 
-			formData.append('to_id', <?= json_encode($chatWith['id']) ?>);
+    const formData = new FormData();
+    formData.append('message', message);
+    if (fileInput.files.length > 0) {
+        formData.append('attachment', fileInput.files[0]);
+    }
 
-			if (replyToId !== null) {
-				formData.append('reply_to_id', replyToId);
-			}
+    formData.append('to_id', <?= json_encode($chatWith['id']) ?>);
 
-			$.ajax({
-				url: "../Public/Pages/Chat/app/ajax/insert.php",
-				type: "POST",
-				data: formData,
-				processData: false,
-				contentType: false,
-				success: function(response) {
-					const data = JSON.parse(response);
-					if (data.status === "success") {
-						document.getElementById('message').value = "";
-						document.getElementById('fileInput').value = "";
-						replyToId = null;
-						clearReply(); // Reset reply reference
-						$("#chatBox").append(data.html);
-						scrollDown();
-					} else {
-						console.error("Error in response:", data.message);
-					}
-				},
-				error: function(xhr, status, error) {
-					console.error("Error sending message:", xhr.responseText);
-				}
-			});
-		}
+    if (replyToId !== null) {
+        formData.append('reply_to_id', replyToId);
+    }
+
+    $.ajax({
+        url: "../Public/Pages/Chat/app/ajax/insert.php",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            const data = JSON.parse(response);
+            if (data.status === "success") {
+                document.getElementById('message').value = "";
+                document.getElementById('fileInput').value = "";
+                replyToId = null;
+                clearReply(); // Reset reply reference
+                $("#chatBox").append(data.html);
+                scrollDown();
+                document.getElementById('filePreviewContainer').style.display = 'none'; // Hide preview after sending
+                document.getElementById('sendBtn').style.display = 'none'; // Hide send button after sending
+            } else {
+                console.error("Error in response:", data.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error sending message:", xhr.responseText);
+        }
+    });
+}
 
 		function onNewMessageReceived() {
 			var chatSound = document.getElementById('chatNotificationSound');
