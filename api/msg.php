@@ -3,6 +3,9 @@ require '../vendor/autoload.php';
 
 use Google\Client;
 use Google\Service\FirebaseCloudMessaging;
+use Google\Service\FirebaseCloudMessaging\Message;
+use Google\Service\FirebaseCloudMessaging\Notification;
+use Google\Service\FirebaseCloudMessaging\SendMessageRequest;
 
 function sendFCMNotification($token, $title, $body) {
     // Path to your service account key file
@@ -27,18 +30,19 @@ function sendFCMNotification($token, $title, $body) {
 
     $fcm = new FirebaseCloudMessaging($client);
 
-    $message = [
-        'message' => [
-            'token' => $token,
-            'notification' => [
-                'title' => $title,
-                'body' => $body
-            ]
-        ]
-    ];
+    $notification = new Notification();
+    $notification->setTitle($title);
+    $notification->setBody($body);
+
+    $message = new Message();
+    $message->setToken($token);
+    $message->setNotification($notification);
+
+    $sendMessageRequest = new SendMessageRequest();
+    $sendMessageRequest->setMessage($message);
 
     try {
-        $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $message);
+        $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
         return json_encode($response, JSON_PRETTY_PRINT);
     } catch (Exception $e) {
         return 'Error sending message: ' . $e->getMessage();
