@@ -78,7 +78,7 @@ function sendFCMNotification($userId, $title, $body) {
             return 'Error sending message: ' . $e->getMessage();
         } catch (Exception $e) {
             error_log('Error sending message: ' . $e->getMessage());
-            return 'Error sending message: ' . $e->getMessage();
+            return 'Error sending messagehjbhj: ' . $e->getMessage();
         }
     } else {
         return "No token found.";
