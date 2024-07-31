@@ -25,24 +25,30 @@ function sendFCMNotification($token, $title, $body) {
         return 'Project ID not found in service account key file';
     }
 
+    // Initialize the Google Client
     $client = new Client();
     $client->setAuthConfig($serviceAccountKeyFilePath);
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
 
+    // Initialize the FCM service
     $fcm = new FirebaseCloudMessaging($client);
 
+    // Create the notification
     $notification = new Notification();
     $notification->setTitle($title);
     $notification->setBody($body);
 
+    // Create the message
     $message = new Message();
     $message->setToken($token);
     $message->setNotification($notification);
 
+    // Create the send message request
     $sendMessageRequest = new SendMessageRequest();
     $sendMessageRequest->setMessage($message);
 
     try {
+        // Send the message
         $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
         return json_encode($response, JSON_PRETTY_PRINT);
     } catch (GoogleServiceException $e) {
