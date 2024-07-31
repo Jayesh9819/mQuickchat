@@ -2,8 +2,8 @@
 require '../vendor/autoload.php';
 
 use Google\Auth\CredentialsLoader;
-use Google\Auth\OAuth2;
 use GuzzleHttp\Client;
+use Google\Auth\HttpHandler\Guzzle6HttpHandler;
 
 function getAccessToken() {
     $jsonKeyFilePath = './key.json'; // Path to your service account key file
@@ -18,7 +18,9 @@ function getAccessToken() {
         'verify' => false,
     ]);
 
-    $token = $credentials->fetchAuthToken($httpClient);
+    $httpHandler = new Guzzle6HttpHandler($httpClient);
+
+    $token = $credentials->fetchAuthToken($httpHandler);
     if (isset($token['access_token'])) {
         return $token['access_token'];
     } else {
@@ -58,7 +60,6 @@ function sendFCMNotification($token, $title, $body) {
         return 'Error sending message: ' . $e->getMessage();
     }
 }
-
 // Fetch the token from your database
 $token = "dG5FnLz7QaeokWnN5j0T78:APA91bGs5GdCR1hHBZ-keEqdTzMuVubuTj6Y0kSOvJSoP8tVFwy3MHWDm8clalP4XbtXNaYEVR4rcn1yDzEbu0jqmSFG3viuFDd3POu5c7o55PjlnjcZeqDb3_2yKl9psh4Bc2_9v69R"; // Replace with the user token you fetched from the database
 $title = "Test Notification";
