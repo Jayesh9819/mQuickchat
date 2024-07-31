@@ -80,6 +80,29 @@
 		.w-10 {
 			width: 10%;
 		}
+		#sendBtn {
+    display: none; /* Hide send button initially */
+}
+
+#filePreviewContainer {
+    display: none; /* Hide preview container initially */
+}
+
+#removeFilePreview {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
 
 		.fs-big {
