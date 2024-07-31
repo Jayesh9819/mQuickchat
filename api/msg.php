@@ -48,9 +48,7 @@ function sendFCMNotification($userId, $title, $body)
                 'token' => $token,
                 'notification' => [
                     'title' => $title,
-                    'body' => $body,
-                    'channel_id' => 'high_importance_channel',  // This should match the channel ID in Flutter
-                    'sound' => 'default'  // This is optional and mainly controlled by Flutter
+                    'body' => $body
                 ],
                 'priority' => 'high'
             ]
