@@ -1,78 +1,61 @@
 <?php
 require '../vendor/autoload.php';
 
-use Google\Client;
-use Google\Service\FirebaseCloudMessaging;
-use Google\Service\FirebaseCloudMessaging\Message;
-use Google\Service\FirebaseCloudMessaging\Notification;
-use Google\Service\FirebaseCloudMessaging\SendMessageRequest;
-use Google\Service\Exception as GoogleServiceException;
+use Google\Auth\CredentialsLoader;
+use Google\Auth\OAuth2;
+use GuzzleHttp\Client;
+
+function getAccessToken() {
+    $jsonKeyFilePath = './key.json'; // Path to your service account key file
+
+    $credentials = CredentialsLoader::makeCredentials(
+        ['https://www.googleapis.com/auth/firebase.messaging'],
+        json_decode(file_get_contents($jsonKeyFilePath), true)
+    );
+
+    $httpClient = new Client([
+        'timeout' => 10.0,
+        'verify' => false,
+    ]);
+
+    $token = $credentials->fetchAuthToken($httpClient);
+    if (isset($token['access_token'])) {
+        return $token['access_token'];
+    } else {
+        throw new Exception('Failed to get access token');
+    }
+}
 
 function sendFCMNotification($token, $title, $body) {
-    // Path to your service account key file
-    $serviceAccountKeyFilePath = './key.json';
+    $accessToken = getAccessToken(); // Get OAuth 2.0 access token
+    $projectId = 'quickchatbiz-a6bc8'; // Replace with your Firebase project ID
 
-    // Check if the key file exists
-    if (!file_exists($serviceAccountKeyFilePath)) {
-        return 'Service account key file not found';
-    }
-
-    // Get the project ID from the service account key file
-    $serviceAccount = json_decode(file_get_contents($serviceAccountKeyFilePath), true);
-    if (isset($serviceAccount['project_id'])) {
-        $projectId = $serviceAccount['project_id'];
-    } else {
-        return 'Project ID not found in service account key file';
-    }
-
-    // Initialize the Google Client
     $client = new Client();
-    $client->setAuthConfig($serviceAccountKeyFilePath);
-    $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+    $url = "https://fcm.googleapis.com/v1/projects/{$projectId}/messages:send";
 
-    // Initialize the FCM service
-    $fcm = new FirebaseCloudMessaging($client);
-
-    // Create the notification
-    $notification = new Notification();
-    $notification->setTitle($title);
-    $notification->setBody($body);
-
-    // Check for empty token
-    if (empty($token)) {
-        return 'Missing device token';
-    }
-
-    // Create the message
-    $message = new Message();
-    $message->setToken($token);
-    $message->setNotification($notification);
-
-    // Create the send message request
-    $sendMessageRequest = new SendMessageRequest();
-    $sendMessageRequest->setMessage($message);
+    $message = [
+        'message' => [
+            'token' => $token,
+            'notification' => [
+                'title' => $title,
+                'body' => $body
+            ]
+        ]
+    ];
 
     try {
-        // Send the message
-        $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $sendMessageRequest);
-        return json_encode($response, JSON_PRETTY_PRINT);
-    } catch (GoogleServiceException $e) {
-        // Log the raw error message and response
-        error_log('Error sending message: ' . $e->getMessage());
-        error_log('Request: ' . json_encode($sendMessageRequest));
-        error_log('Response: ' . print_r($e->getResponse(), true));
+        $response = $client->post($url, [
+            'headers' => [
+                'Authorization' => "Bearer {$accessToken}",
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($message),
+        ]);
 
-        // Attempt to decode the response body for more details
-        $errorResponse = $e->getMessage();
-        $decodedErrors = json_decode($errorResponse, true);
-        if ($decodedErrors) {
-            return 'Error sending message: ' . json_encode($decodedErrors, JSON_PRETTY_PRINT);
-        } else {
-            return 'Error sending message: ' . $e->getMessage() . "\nRaw error response:\n" . $errorResponse . "\nStack trace:\n" . $e->getTraceAsString();
-        }
+        return $response->getBody()->getContents();
     } catch (Exception $e) {
-        // Handle any other exceptions
-        return 'Error sending message: ' . $e->getMessage() . "\nStack trace:\n" . $e->getTraceAsString();
+        error_log('Error sending message: ' . $e->getMessage());
+        return 'Error sending message: ' . $e->getMessage();
     }
 }
 
@@ -86,4 +69,3 @@ $response = sendFCMNotification($token, $title, $body);
 // Ensure some output to verify script execution
 echo "Script executed\n";
 echo "Response: $response\n";
-?>
