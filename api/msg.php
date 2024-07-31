@@ -8,6 +8,11 @@ function sendFCMNotification($token, $title, $body) {
     // Path to your service account key file
     $serviceAccountKeyFilePath = './key.json';
 
+    // Check if the key file exists
+    if (!file_exists($serviceAccountKeyFilePath)) {
+        return 'Service account key file not found';
+    }
+
     $client = new Client();
     $client->setAuthConfig($serviceAccountKeyFilePath);
     $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
@@ -38,6 +43,8 @@ $title = "Test Notification";
 $body = "This is a test notification";
 
 $response = sendFCMNotification($token, $title, $body);
-echo "Executed";
-echo $response;
+
+// Ensure some output to verify script execution
+echo "Script executed\n";
+echo "Response: $response\n";
 ?>
