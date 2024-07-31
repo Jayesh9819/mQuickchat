@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 use Google\Client;
 use Google\Service\FirebaseCloudMessaging;
@@ -11,6 +11,14 @@ function sendFCMNotification($token, $title, $body) {
     // Check if the key file exists
     if (!file_exists($serviceAccountKeyFilePath)) {
         return 'Service account key file not found';
+    }
+
+    // Get the project ID from the service account key file
+    $serviceAccount = json_decode(file_get_contents($serviceAccountKeyFilePath), true);
+    if (isset($serviceAccount['project_id'])) {
+        $projectId = $serviceAccount['project_id'];
+    } else {
+        return 'Project ID not found in service account key file';
     }
 
     $client = new Client();
@@ -30,8 +38,8 @@ function sendFCMNotification($token, $title, $body) {
     ];
 
     try {
-        $response = $fcm->projects_messages->send('projects/' . $client->getProjectId() . '/messages:send', $message);
-        return $response;
+        $response = $fcm->projects_messages->send("projects/$projectId/messages:send", $message);
+        return json_encode($response, JSON_PRETTY_PRINT);
     } catch (Exception $e) {
         return 'Error sending message: ' . $e->getMessage();
     }
@@ -45,6 +53,6 @@ $body = "This is a test notification";
 $response = sendFCMNotification($token, $title, $body);
 
 // Ensure some output to verify script execution
-echo "Script executed \n";
+echo "Script executed\n";
 echo "Response: $response\n";
 ?>
