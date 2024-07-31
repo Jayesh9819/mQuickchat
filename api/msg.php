@@ -1,50 +1,42 @@
 <?php
-// Include database configuration file
-include_once '../App/db/db_connect.php';
+require 'vendor/autoload.php';
 
-// Function to send FCM notification
-function sendFCMNotification($userId, $title, $body)
-{
-   
-    include '../App/db/db_connect.php';
-    $sql = "SELECT fcm_token FROM user_tokens WHERE user_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
-    $stmt->bind_result($token);
-    $stmt->fetch();
-    $stmt->close();
+use Google\Client;
+use Google\Service\FirebaseCloudMessaging;
 
-    // Send notification if token exists
-    if ($token) {
-        $apiKey = 'AAAAfnk_oyY:APA91bE5TDkyJdwr1dTDtNmYAmeZ3-B6nlC_AwcRD3zgFQ4TcosDdq4JPCHFl_pd_CILt-x5H1Fh4NOgPkrVwgzF08wbkz1wZaCvWrui4qy528UVFVky02PRj6Bur5PnKflPbcdxwd63';
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        $fields = [
-            'to' => $token,
+function sendFCMNotification($token, $title, $body) {
+    // Path to your service account key file
+    $serviceAccountKeyFilePath = './key.json';
+
+    $client = new Client();
+    $client->setAuthConfig($serviceAccountKeyFilePath);
+    $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+
+    $fcm = new FirebaseCloudMessaging($client);
+
+    $message = [
+        'message' => [
+            'token' => $token,
             'notification' => [
                 'title' => $title,
-                'body' => $body,
-                'channel_id' => 'high_importance_channel',  // This should match the channel ID in Flutter
-                'sound' => 's'  // This is optional and mainly controlled by Flutter
-            ],
-            'priority' => 'high'
-        ];
-        $headers = [
-            'Authorization: key=' . $apiKey,
-            'Content-Type: application/json'
-        ];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
-    } else {
-        return "No token found.";
+                'body' => $body
+            ]
+        ]
+    ];
+
+    try {
+        $response = $fcm->projects_messages->send('projects/' . $client->getProjectId() . '/messages:send', $message);
+        return $response;
+    } catch (Exception $e) {
+        return 'Error sending message: ' . $e->getMessage();
     }
 }
-//  echo sendFCMNotification(2,"hellooo","Hiiiiiiiiii");
+
+// Fetch the token from your database
+$token = "dG5FnLz7QaeokWnN5j0T78:APA91bGs5GdCR1hHBZ-keEqdTzMuVubuTj6Y0kSOvJSoP8tVFwy3MHWDm8clalP4XbtXNaYEVR4rcn1yDzEbu0jqmSFG3viuFDd3POu5c7o55PjlnjcZeqDb3_2yKl9psh4Bc2_9v69R"; // Replace with the user token you fetched from the database
+$title = "Test Notification";
+$body = "This is a test notification";
+
+$response = sendFCMNotification($token, $title, $body);
+echo $response;
+?>
