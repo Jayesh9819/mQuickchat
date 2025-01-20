@@ -6,7 +6,7 @@ $username = "quickchat";
 $password = "12345678";
 $dbname = "quickchat";
 
-// Create connection
+// Create connectiong
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
